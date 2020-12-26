@@ -12,15 +12,15 @@ def index(request):
 def content(request, word):
     entries_lst = os.listdir('entries')
     md_word = word + '.md'
-    if (md_word in entries_lst):
-        print("css.md is in here")
+    # if (md_word in entries_lst):
+    #     print("css.md is in here")
     
-    content_html = """<div> <h1>heading</h1> </div>
-    <p>CSS is cook</p>
-    """
+    with open(f'entries/{md_word}', 'r') as f:
+        content = f.read()
+
+    markdown_to_html = markdown2.markdown(content)
     with open('encyclopedia/templates/encyclopedia/filter.html', 'w') as f:
-        #src\Project 0\wiki\encyclopedia\templates\encyclopedia\filter.html
-        f.write(content_html)
+        f.write(markdown_to_html)
     
     return render(request, 'encyclopedia/content.html', {
         'word': word
