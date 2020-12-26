@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 import os
 import markdown2
 from . import util
@@ -11,14 +11,14 @@ def index(request):
 
 def content(request, word):
     entries_lst = os.listdir('entries')
-    md_word = word + '.md'
-    # if (md_word in entries_lst):
-    #     print("css.md is in here")
+    markdown_file = word + '.md'
+    if (markdown_file not in entries_lst):
+        raise Http404("Wiki entry does not exist.")
     
-    with open(f'entries/{md_word}', 'r') as f:
-        content = f.read()
+    with open(f'entries/{markdown_file}', 'r') as f:
+        markdown_content = f.read()
 
-    markdown_to_html = markdown2.markdown(content)
+    markdown_to_html = markdown2.markdown(markdown_content)
     with open('encyclopedia/templates/encyclopedia/filter.html', 'w') as f:
         f.write(markdown_to_html)
     
