@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 import os
 import markdown2
 from . import util
+from .forms import SearchForm
 
 def index(request):
     return render(request, 'encyclopedia/index.html', {
@@ -25,3 +26,10 @@ def content(request, word):
     return render(request, 'encyclopedia/content.html', {
         'word': word
     })
+
+def get_search(request):
+    if request.method == 'GET':
+        #form = SearchForm(request.GET)
+        data = request.GET
+        print('#'*12, data['q'])
+        return HttpResponseRedirect('/')
