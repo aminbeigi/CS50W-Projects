@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('wiki/<str:word>', views.content),
-    path('search/', views.get_search),
+    path(r'(?i)search/', views.get_search),
     path('', views.index, name='index')
 ]

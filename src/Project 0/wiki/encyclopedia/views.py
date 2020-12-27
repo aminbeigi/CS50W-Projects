@@ -31,5 +31,8 @@ def get_search(request):
     if request.method == 'GET':
         #form = SearchForm(request.GET)
         data = request.GET
-        print('#'*12, data['q'])
-        return HttpResponseRedirect('/')
+        query = data['q']
+
+        entries_lst = os.listdir('entries')
+
+        return HttpResponseRedirect('/wiki/' + query)
