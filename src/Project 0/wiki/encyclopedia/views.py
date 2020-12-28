@@ -11,12 +11,12 @@ def index(request):
     })
 
 def content(request, word):
-    entries_lst = os.listdir('entries')
-    markdown_file = word + '.md'
-    if (markdown_file not in entries_lst):
+    entries_lst = util.list_entries()
+    entries_lst_lower = [i.lower() for i in entries_lst]
+    if (word.lower() not in entries_lst_lower):
         raise Http404("Wiki entry does not exist.")
     
-    with open(f'entries/{markdown_file}', 'r') as f:
+    with open(f'entries/{word}.md', 'r') as f:
         markdown_content = f.read()
 
     markdown_to_html = markdown2.markdown(markdown_content)
@@ -28,11 +28,12 @@ def content(request, word):
     })
 
 def get_search(request):
+
     if request.method == 'GET':
         #form = SearchForm(request.GET)
         data = request.GET
         query = data['q']
 
-        entries_lst = os.listdir('entries')
+        entries_lst = util.list_entries()
 
         return HttpResponseRedirect('/wiki/' + query)
