@@ -7,6 +7,8 @@ from .forms import EntryForm
 import random
 from django.contrib import messages
 
+# TODO: urls should match exact or lowercase
+
 def index(request):
     return render(request, 'encyclopedia/index.html', {
         'entries': util.list_entries()
@@ -64,6 +66,11 @@ def create_new_page(request):
         form = EntryForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data.get('title')
+
+            entries_lst_lower = [i.lower() for i in util.list_entries()]
+            if title.lower() in entries_lst_lower:
+                messages.error(request, f"{title} already exists.")
+                return redirect('/')
             content = form.cleaned_data.get('content')
             messages.success(request, f"{title} entry created.")
             util.save_entry(title, content)
