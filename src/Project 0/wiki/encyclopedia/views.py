@@ -33,8 +33,25 @@ def get_search(request):
     if request.method == 'GET':
         data = request.GET
         query = data['q']
-        #entries_lst = util.list_entries()
-        return HttpResponseRedirect('/wiki/' + query)
+
+        entries_lst = util.list_entries()
+        entries_lst_lower = [i.lower() for i in entries_lst]
+        if (query.lower() in entries_lst_lower):
+            return HttpResponseRedirect('/wiki/' + query)   
+       
+        substring_search_lst = []
+
+        for entry in entries_lst:
+            if query.lower() in entry.lower():
+                substring_search_lst.append(entry)
+
+        if len(substring_search_lst) == 0:
+            raise Http404("Wiki entry does not exist.")
+
+        return render(request, 'encyclopedia/search_query.html', {
+            'entry_lst': substring_search_lst
+        })
+
     
 def random_page(request):
     word = random.choice(util.list_entries())
@@ -49,7 +66,7 @@ def create_new_page(request):
             content = form.cleaned_data.get('content')
             messages.success(request, f"{title} entry created.")
             util.save_entry(title, content)
-            return redirect('index')
+            return redirect('/wiki/' + title)
     return render(request, 'encyclopedia/create_new_page.html', {
         'form': form
     })
