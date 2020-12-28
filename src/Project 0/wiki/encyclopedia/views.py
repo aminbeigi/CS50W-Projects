@@ -45,11 +45,12 @@ def get_search(request):
             if query.lower() in entry.lower():
                 substring_search_lst.append(entry)
 
-        if len(substring_search_lst) == 0:
-            raise Http404("Wiki entry does not exist.")
+        # if len(substring_search_lst) == 0:
+        #     raise Http404("Wiki entry does not exist.")
 
         return render(request, 'encyclopedia/search_query.html', {
-            'entry_lst': substring_search_lst
+            'entry_lst': substring_search_lst,
+            'query': query
         })
 
     
