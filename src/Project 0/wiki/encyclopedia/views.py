@@ -37,5 +37,7 @@ def get_search(request):
     
 def random_page(request):
     word = random.choice(util.list_entries())
-    data = request.GET
     return HttpResponseRedirect('/wiki/' + word)
+
+def create_new_page(request):
+    pass
