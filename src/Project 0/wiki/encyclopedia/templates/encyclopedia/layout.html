@@ -20,7 +20,7 @@
                     <a href="{% url 'index' %}">Home</a>
                 </div>
                 <div>
-                    <a href="{% url 'new-page' %}">Create New Page</a>
+                    <a href="{% url 'create_new_page' %}">Create New Page</a>
                 </div>
                 <div>
                     <a href="{% url 'random' %}">Random</a>
@@ -29,6 +29,11 @@
                 {% endblock %}
             </div>
             <div class="main col-lg-10 col-md-9">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
                 {% block body %}
                 {% endblock %}
             </div>

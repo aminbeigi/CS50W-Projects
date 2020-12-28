@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 import os
 import markdown2
 from . import util
-
+from .forms import EntryForm
 import random
+from django.contrib import messages
 
 def index(request):
     return render(request, 'encyclopedia/index.html', {
@@ -32,7 +33,7 @@ def get_search(request):
     if request.method == 'GET':
         data = request.GET
         query = data['q']
-        entries_lst = util.list_entries()
+        #entries_lst = util.list_entries()
         return HttpResponseRedirect('/wiki/' + query)
     
 def random_page(request):
@@ -40,4 +41,14 @@ def random_page(request):
     return HttpResponseRedirect('/wiki/' + word)
 
 def create_new_page(request):
-    return render(request, 'encyclopedia/create_new_page.html')
+    form = EntryForm()
+    if request.method == 'POST':
+        form = EntryForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data.get('title')
+            content = form.cleaned_data.get('content')
+            messages.success(request, f"{title} entry created.")
+            return redirect('index')
+    return render(request, 'encyclopedia/create_new_page.html', {
+        'form': form
+    })
