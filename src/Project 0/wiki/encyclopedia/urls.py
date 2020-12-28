@@ -6,6 +6,6 @@ urlpatterns = [
     #path('wiki/<str:word>', views.content),
     re_path(r'^wiki/(?P<word>\w+)$(?i)', views.content),    
     path('search/', views.get_search),
-    path('', views.random_page, name='random'),
+    path('random/', views.random_page, name='random'),
     path('', views.index, name='index')
 ]

@@ -29,27 +29,13 @@ def content(request, word):
     })
 
 def get_search(request):
-
     if request.method == 'GET':
-        #form = SearchForm(request.GET)
         data = request.GET
         query = data['q']
-
         entries_lst = util.list_entries()
-
         return HttpResponseRedirect('/wiki/' + query)
     
 def random_page(request):
-
     word = random.choice(util.list_entries())
-
-    with open(f'entries/{word}.md', 'r') as f:
-        markdown_content = f.read()
-
-    markdown_to_html = markdown2.markdown(markdown_content)
-    with open('encyclopedia/templates/encyclopedia/filter.html', 'w') as f:
-        f.write(markdown_to_html)
-
-    return render(request, 'encyclopedia/content.html', {
-        'word': word
-    })   
+    data = request.GET
+    return HttpResponseRedirect('/wiki/' + word)
