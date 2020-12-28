@@ -48,6 +48,7 @@ def create_new_page(request):
             title = form.cleaned_data.get('title')
             content = form.cleaned_data.get('content')
             messages.success(request, f"{title} entry created.")
+            util.save_entry(title, content)
             return redirect('index')
     return render(request, 'encyclopedia/create_new_page.html', {
         'form': form
