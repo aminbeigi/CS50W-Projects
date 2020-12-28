@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 import os
 import markdown2
 from . import util
-from .forms import SearchForm
+
 import random
 
 def index(request):
@@ -40,4 +40,4 @@ def random_page(request):
     return HttpResponseRedirect('/wiki/' + word)
 
 def create_new_page(request):
-    pass
+    return render(request, 'encyclopedia/create_new_page.html')
