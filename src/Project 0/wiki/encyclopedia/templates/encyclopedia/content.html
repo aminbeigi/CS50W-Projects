@@ -6,4 +6,5 @@
 
 {% block body %}
     {% include 'encyclopedia/filter.html' %}
+    <a href="{% url 'edit_entry' word %}" class="btn btn-primary">Edit entry</a>
 {% endblock %}

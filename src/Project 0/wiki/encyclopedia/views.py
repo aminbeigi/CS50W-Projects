@@ -81,3 +81,9 @@ def create_new_page(request):
     return render(request, 'encyclopedia/create_new_page.html', {
         'form': form
     })
+
+def edit_entry(request, word):
+    form = EntryForm()
+    return render(request, 'encyclopedia/edit_entry.html', {
+        'word': word
+    })
