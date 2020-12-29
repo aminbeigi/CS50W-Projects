@@ -69,12 +69,15 @@ def create_new_page(request):
 
             entries_lst_lower = [i.lower() for i in util.list_entries()]
             if title.lower() in entries_lst_lower:
-                messages.error(request, f"{title} already exists.")
-                return redirect('/')
+                messages.error(request, f"Error: {title} already exists.")
+                return redirect(create_new_page)            
+            
             content = form.cleaned_data.get('content')
-            messages.success(request, f"{title} entry created.")
+            messages.success(request, f"Success: {title} entry created.")
             util.save_entry(title, content)
             return redirect('/wiki/' + title)
+    else:
+        form = EntryForm()
     return render(request, 'encyclopedia/create_new_page.html', {
         'form': form
     })
