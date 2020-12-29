@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 import os
 import markdown2
 from . import util
-from .forms import EntryForm
+from .forms import EntryForm, EditEntryForm
 import random
 from django.contrib import messages
 
@@ -83,7 +83,9 @@ def create_new_page(request):
     })
 
 def edit_entry(request, word):
-    form = EntryForm()
+    form = EditEntryForm(initial={'title': word})
+    
     return render(request, 'encyclopedia/edit_entry.html', {
-        'word': word
+        'word': word,
+        'form': form
     })
