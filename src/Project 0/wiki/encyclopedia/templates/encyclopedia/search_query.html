@@ -1,0 +1,21 @@
+{% extends "encyclopedia/layout.html" %}
+{% load encyclopedia_extras %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>The page "{{ query }}" doens't exist.</h1>
+    {% if entry_lst %}
+        <h2>Did you mean?</h2>
+        <ul>
+            {% for entry in entry_lst %}
+                <li> <a href="{{ '/wiki/'|addstr:entry }}"> {{ entry }} </a> </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There were no results matching the query.</p>
+    {% endif %}
+
+{% endblock %}
