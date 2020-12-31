@@ -93,13 +93,19 @@ def edit_entry(request, word):
         if form.is_valid():
             content = form.cleaned_data.get('content')
 
-            if content == page_content:
+            if content.replace('\r', '') == page_content: # TODO: fix this
                 messages.error(request, f"Error: no changes have been made.")
                 return redirect(f'/wiki/{word}/edit-entry')
             
             messages.success(request, f"Success: {word} entry has been editted.")
             util.save_entry(word, content)
-            print(page_content, '########', content)
+
+
+            print(page_content)
+            print('########')
+            print(content)
+
+
             return redirect('/wiki/' + word)
 
     return render(request, 'encyclopedia/edit_entry.html', {
