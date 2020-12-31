@@ -85,6 +85,14 @@ def create_new_page(request):
 def edit_entry(request, word):
     form = EditEntryForm(initial={'title': word})
     
+    if request.method == 'POST':
+        form = EditEntryForm(request.POST)
+        if form.is_valid():         
+            content = form.cleaned_data.get('content')
+            messages.success(request, f"Success: {word} entry has been editted.")
+            util.save_entry(word, content)
+            return redirect('/wiki/' + word)
+
     return render(request, 'encyclopedia/edit_entry.html', {
         'word': word,
         'form': form
