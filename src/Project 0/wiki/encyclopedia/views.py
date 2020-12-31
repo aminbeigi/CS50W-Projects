@@ -6,7 +6,6 @@ from . import util
 from .forms import EntryForm, EditEntryForm
 import random
 from django.contrib import messages
-import difflib
 
 # TODO: urls should match exact or lowercase
 
@@ -86,7 +85,6 @@ def create_new_page(request):
 def edit_entry(request, word):
     with open(f'entries/{word}.md', 'r', newline='\r\n') as f:
         page_content = f.read().replace('\r', '')
-    print(page_content)
 
     form = EditEntryForm(initial={'title': word, 'content': page_content})
         
@@ -94,7 +92,6 @@ def edit_entry(request, word):
         form = EditEntryForm(request.POST)
         if form.is_valid():
             content = form.cleaned_data.get('content')
-            #print(content)
 
             if content == page_content:
                 messages.error(request, f"Error: no changes have been made.")
@@ -102,12 +99,7 @@ def edit_entry(request, word):
             
             messages.success(request, f"Success: {word} entry has been editted.")
             util.save_entry(word, content)
-
-            # output = ''
-            # for i in difflib.ndiff(content, page_content):
-            #     output += i
-            # print(output)
-
+            print(page_content, '########', content)
             return redirect('/wiki/' + word)
 
     return render(request, 'encyclopedia/edit_entry.html', {
