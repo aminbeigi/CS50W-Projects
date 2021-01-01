@@ -14,13 +14,13 @@ def index(request):
         'entries': util.list_entries()
     })
 
-def content(request, word):
+def content(request, title):
     entries_lst = util.list_entries()
     entries_lst_lower = [i.lower() for i in entries_lst]
-    if (word.lower() not in entries_lst_lower):
+    if (title.lower() not in entries_lst_lower):
         raise Http404("Wiki entry does not exist.")
     
-    with open(f'entries/{word}.md', 'r') as f:
+    with open(f'entries/{title}.md', 'r') as f:
         markdown_content = f.read()
 
     markdown_to_html = markdown2.markdown(markdown_content)
@@ -28,7 +28,7 @@ def content(request, word):
         f.write(markdown_to_html)
     
     return render(request, 'encyclopedia/content.html', {
-        'word': word
+        'title': title
     })
 
 def get_search(request):
@@ -57,8 +57,8 @@ def get_search(request):
 
     
 def random_page(request):
-    word = random.choice(util.list_entries())
-    return HttpResponseRedirect('/wiki/' + word)
+    title = random.choice(util.list_entries())
+    return HttpResponseRedirect('/wiki/' + title)
 
 def create_new_page(request):
     form = EntryForm()
@@ -69,11 +69,11 @@ def create_new_page(request):
 
             entries_lst_lower = [i.lower() for i in util.list_entries()]
             if title.lower() in entries_lst_lower:
-                messages.error(request, f"Error: {title} already exists.")
+                messages.error(request, f"{title} already exists.")
                 return redirect(create_new_page)            
             
             content = form.cleaned_data.get('content')
-            messages.success(request, f"Success: {title} entry created.")
+            messages.success(request, f"{title} entry created.")
             util.save_entry(title, content)
             return redirect('/wiki/' + title)
     else:
@@ -82,23 +82,23 @@ def create_new_page(request):
         'form': form
     })
 
-def edit_entry(request, word):
-    with open(f'entries/{word}.md', 'r', newline='\r\n') as f:
-        page_content = f.read().replace('\r', '')
+def edit_entry(request, title):
+    with open(f'entries/{title}.md', 'r', newline='\r\n') as f:
+       page_content = f.read().replace('\r', '')
 
-    form = EditEntryForm(initial={'title': word, 'content': page_content})
+    form = EditEntryForm(initial={'title': title, 'content': page_content})
         
     if request.method == 'POST':
         form = EditEntryForm(request.POST)
         if form.is_valid():
-            content = form.cleaned_data.get('content')
+            content = form.cleaned_data.get('content').replace('\r', '')
 
-            if content.replace('\r', '') == page_content: # TODO: fix this
-                messages.error(request, f"Error: no changes have been made.")
-                return redirect(f'/wiki/{word}/edit-entry')
+            if content == page_content: # TODO: fix this
+                messages.error(request, f"No changes have been made.")
+                return redirect(f'/wiki/{title}/edit-entry')
             
-            messages.success(request, f"Success: {word} entry has been editted.")
-            util.save_entry(word, content)
+            messages.success(request, f"{title} entry has been editted.")
+            util.save_entry(title, content)
 
 
             print(page_content)
@@ -106,9 +106,9 @@ def edit_entry(request, word):
             print(content)
 
 
-            return redirect('/wiki/' + word)
+            return redirect('/wiki/' + title)
 
     return render(request, 'encyclopedia/edit_entry.html', {
-        'word': word,
+        'title': title,
         'form': form
     })
