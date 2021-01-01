@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import Http404
 import os
 import markdown2
 from . import util
 from .forms import EntryForm, EditEntryForm
 import random
 from django.contrib import messages
-
-# TODO: urls should match exact or lowercase
 
 def index(request):
     return render(request, 'encyclopedia/index.html', {
@@ -17,7 +15,8 @@ def index(request):
 def content(request, title):
     entries_lst = util.list_entries()
     entries_lst_lower = [i.lower() for i in entries_lst]
-    if (title.lower() not in entries_lst_lower):
+    # urls should match exact or lowercase
+    if (title.lower() not in entries_lst_lower or title not in entries_lst):
         raise Http404("Wiki entry does not exist.")
     
     with open(f'entries/{title}.md', 'r') as f:
@@ -39,7 +38,7 @@ def get_search(request):
         entries_lst = util.list_entries()
         entries_lst_lower = [i.lower() for i in entries_lst]
         if (query.lower() in entries_lst_lower):
-            return HttpResponseRedirect('/wiki/' + query)   
+            return redirect('/wiki/' + query)   
        
         substring_search_lst = []
 
@@ -58,14 +57,21 @@ def get_search(request):
     
 def random_page(request):
     title = random.choice(util.list_entries())
-    return HttpResponseRedirect('/wiki/' + title)
+    return redirect('/wiki/' + title)
 
 def create_new_page(request):
     form = EntryForm()
     if request.method == 'POST':
         form = EntryForm(request.POST)
         if form.is_valid():
+            
             title = form.cleaned_data.get('title')
+            
+            valid_first_char_lst = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
+            if title[0] not in valid_first_char_lst:
+                messages.error(request, f"{title} can not begin with a special character.")
+                return redirect(create_new_page)            
 
             entries_lst_lower = [i.lower() for i in util.list_entries()]
             if title.lower() in entries_lst_lower:
@@ -93,18 +99,12 @@ def edit_entry(request, title):
         if form.is_valid():
             content = form.cleaned_data.get('content').replace('\r', '')
 
-            if content == page_content: # TODO: fix this
+            if content == page_content:
                 messages.error(request, f"No changes have been made.")
                 return redirect(f'/wiki/{title}/edit-entry')
             
             messages.success(request, f"{title} entry has been editted.")
             util.save_entry(title, content)
-
-
-            print(page_content)
-            print('########')
-            print(content)
-
 
             return redirect('/wiki/' + title)
 
