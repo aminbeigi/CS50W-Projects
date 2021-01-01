@@ -7,18 +7,27 @@ from .forms import EntryForm, EditEntryForm
 import random
 from django.contrib import messages
 
+VALID_FIRST_CHAR = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
 def index(request):
     return render(request, 'encyclopedia/index.html', {
         'entries': util.list_entries()
     })
 
 def content(request, title):
+    print(title)
     entries_lst = util.list_entries()
     entries_lst_lower = [i.lower() for i in entries_lst]
-    # urls should match exact or lowercase
-    if (title.lower() not in entries_lst_lower or title not in entries_lst):
+
+    # urls should match exactcase or lowercase
+    if title.lower() not in entries_lst_lower:
         raise Http404("Wiki entry does not exist.")
-    
+
+    print(title)
+
+    if title not in entries_lst and title not in entries_lst_lower:
+        raise Http404("Wiki entry does not exist.")
+
     with open(f'entries/{title}.md', 'r') as f:
         markdown_content = f.read()
 
@@ -46,9 +55,6 @@ def get_search(request):
             if query.lower() in entry.lower():
                 substring_search_lst.append(entry)
 
-        # if len(substring_search_lst) == 0:
-        #     raise Http404("Wiki entry does not exist.")
-
         return render(request, 'encyclopedia/search_query.html', {
             'entry_lst': substring_search_lst,
             'query': query
@@ -67,9 +73,7 @@ def create_new_page(request):
             
             title = form.cleaned_data.get('title')
             
-            valid_first_char_lst = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-
-            if title[0] not in valid_first_char_lst:
+            if title[0] not in VALID_FIRST_CHAR:
                 messages.error(request, f"{title} can not begin with a special character.")
                 return redirect(create_new_page)            
 
