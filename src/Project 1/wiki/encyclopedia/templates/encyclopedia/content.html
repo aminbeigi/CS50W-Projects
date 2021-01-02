@@ -1,0 +1,10 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }} - Wiki
+{% endblock %}
+
+{% block body %}
+    {% include 'encyclopedia/filter.html' %}
+    <a href="{% url 'edit_entry' title %}" class="btn btn-primary">Edit entry</a>
+{% endblock %}
