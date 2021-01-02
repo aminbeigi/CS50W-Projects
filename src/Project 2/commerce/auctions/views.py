@@ -10,7 +10,6 @@ from .models import User
 def index(request):
     return render(request, "auctions/index.html")
 
-
 def login_view(request):
     if request.method == "POST":
 
@@ -29,7 +28,6 @@ def login_view(request):
             })
     else:
         return render(request, "auctions/login.html")
-
 
 def logout_view(request):
     logout(request)
