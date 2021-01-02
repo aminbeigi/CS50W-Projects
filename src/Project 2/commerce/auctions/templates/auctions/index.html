@@ -3,5 +3,17 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    TODO
+    {% for listing in Listing %}
+        <div>
+            {{ listing.id }} - {{ listing.title }}
+            (TODO - IMAGE)
+            <div>
+                {{ listing.description }}
+            </div>
+            <ul>
+                <li>Listed by: {{ listing.author }}</li>
+                <li>Created {{ listing.date_posted|date:"M j, Y, fa" }}</li>
+            </ul>
+        </div>
+    {% endfor %}
 {% endblock %}
