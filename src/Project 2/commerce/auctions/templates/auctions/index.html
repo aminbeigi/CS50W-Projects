@@ -4,16 +4,21 @@
     <h2>Active Listings</h2>
 
     {% for listing in Listing %}
-        <div>
-            {{ listing.id }} - {{ listing.title }}
-            (TODO - IMAGE)
-            <div>
+    <div class="card">
+        <div class="media">
+            <img class="mr-3" src="" alt="blah blah">
+            
+            <div class="media-body">
+                
+                <h5 class="mt-0">{{ listing.id }} - {{ listing.title }}</h5>
+                <p>Price: $0</p>
                 {{ listing.description }}
-            </div>
             <ul>
                 <li>Listed by: {{ listing.author }}</li>
                 <li>Created {{ listing.date_posted|date:"M j, Y, fa" }}</li>
             </ul>
+            </div>
         </div>
+    <div>
     {% endfor %}
 {% endblock %}
