@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.contrib import messages
 
+from .forms import UserRegisterForm
 from auctions.models import User, Listing
 
 def register(request):
