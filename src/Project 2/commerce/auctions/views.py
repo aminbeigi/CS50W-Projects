@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib import messages
 
 from .models import User, Listing
 
@@ -24,9 +25,8 @@ def login_view(request):
             login(request, user)
             return redirect("index") 
         else:
-            return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            messages.error(request, f"Invalid username and/or password.") 
+            return render(request, "auctions/login.html")
     else:
         return render(request, "auctions/login.html")
 
