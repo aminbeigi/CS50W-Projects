@@ -10,7 +10,7 @@ class Listing(models.Model):
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=8, decimal_places=2)i
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     image = models.ImageField(default='default.jpg', upload_to='images')
 
     def __str__(self):
