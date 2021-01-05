@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ listing.title }}</h2>
+
+
+    <div class="container">
+        <img src="{{ listing.image.url }}" alt="image">
+        <p>{{ listing.description }}</p>
+
+        <p>Price: $0</p>
+
+        <p>TODO: add bid section</p>
+        <p>x bid(s) so far. Your bid is the current bid.</p>
+        <button class="btn btn-primary" type="submit">Place Bid</button>
+
+        <h3>Details</h3>
+        <ul>
+            <li>Listed by: {{ listing.author }}</li>
+            <li>Created {{ listing.date_posted|date:"M j, Y, fa" }}</li>
+        </ul>
+    <div>
+{% endblock %}

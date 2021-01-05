@@ -7,6 +7,10 @@ body {
 }
 
 .media-body {
-    margin-left: 25vw;
+    margin-left: 10vw;
 }
 
+img {
+    max-width: 500px;
+    max-height: 500px;
+}
