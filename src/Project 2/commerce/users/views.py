@@ -29,6 +29,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            messages.success(request, f'Logged into {request.user.username}')
             return redirect("index") 
         else:
             messages.error(request, f"Invalid username and/or password.") 
@@ -37,5 +38,6 @@ def login_view(request):
         return render(request, "users/login.html")
 
 def logout_view(request):
+    messages.error(request, f'Logged out of {request.user.username}')
     logout(request)
     return redirect("index") 

@@ -25,7 +25,7 @@ def create_listing(request):
             listing.save()
             title = form.cleaned_data.get('title')
             messages.success(request, f'Created new listing for {title}.')
-            return redirect('/')
+            return redirect(f'/listing/{listing.id}')
     else:
         form = CreateListing()
     return render(request, 'auctions/create_listing.html', {
