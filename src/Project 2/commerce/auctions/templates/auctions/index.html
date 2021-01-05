@@ -6,7 +6,8 @@
     {% for listing in Listing %}
     <div class="card">
         <div class="media">
-            <img class="mr-3" src="" alt="blah blah">
+            <p>{{listing.image}}</p>
+            <img class="mr-3" src="{{ listing.image.url }}" alt="blah blah">
             
             <div class="media-body">
                 
