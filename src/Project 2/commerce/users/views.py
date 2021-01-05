@@ -13,37 +13,29 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect('blog-home')
+            return redirect('/')
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})    
     
-"""
-def register(request):
-    form = UserCreationForm()
+def login_view(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        username = request.POST["username"]
-        email = request.POST["email"]
-        
-        # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
-        if password != confirmation:
-            return render(request, "users/register.html", {
-                "message": "Passwords must match."
-            })
 
-        # Attempt to create new user
-        try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
-        except IntegrityError:
-            return render(request, "users/register.html", {
-                "message": "Username already taken."
-            })
-        login(request, user)
-        return redirect("index")
+        # Attempt to sign user in
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login(request, user)
+            return redirect("index") 
+        else:
+            messages.error(request, f"Invalid username and/or password.") 
+            return render(request, "users/login.html")
     else:
-        return render(request, "users/register.html")
-"""
+        return render(request, "users/login.html")
+
+def logout_view(request):
+    logout(request)
+    return redirect("index") 
