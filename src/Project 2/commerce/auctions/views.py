@@ -20,7 +20,9 @@ def create_listing(request):
     if request.method == 'POST':
         form = CreateListing(request.POST)
         if form.is_valid():
-            f = form.save(commit=False)
+            listing = form.save(commit=False)
+            listing.author = request.user
+            listing.save()
             title = form.cleaned_data.get('title')
             messages.success(request, f'Created new listing for {title}.')
             return redirect('/')
