@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing
-from .forms import CreateListing
+from .models import User, Listing, Comment
+from .forms import CreateListing, CreateComment
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -11,8 +11,26 @@ def index(request):
     })
 
 def listing(request, id):
+
+    print('#'*40)
+    print(request.user == 'AnonymousUser')
+    if request.method == 'POST':
+        if request.user == 'AnonymousUser':
+            messages.error(request, f'You need to be signed in to comment.')
+            return redirect(f'/') 
+        form = CreateComment(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.save()
+            messages.success(request, f'Created new comment.')
+            return redirect(f'/listing/{id}')
+    else:
+        form = CreateComment()
     return render(request, "auctions/listing.html", {
-        'listing': Listing.objects.get(id=id)
+        'listing': Listing.objects.get(id=id),
+        'comments': Comment.objects.all(),
+        'form': form
     })
 
 @login_required

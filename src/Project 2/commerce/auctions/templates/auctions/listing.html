@@ -1,4 +1,5 @@
 {% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
 
 {% block body %}
     <h2>Listing: {{ listing.title }}</h2>
@@ -14,18 +15,41 @@
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">$</span>
+            	<span class="input-group-text" id="basic-addon1">$</span>
             </div>
             <input type="text" class="form-control" placeholder="bid" aria-label="bid" aria-describedby="basic-addon1">
           </div>
 
-        <button class="btn btn-primary" type="submit">Place Bid</button>
+		<button class="btn btn-primary" type="submit" value="big">Place Bid</button>
+		
         <hr>
-    
         <h3>Details</h3>
         <ul>
             <li>Listed by: {{ listing.author }}</li>
             <li>Created {{ listing.date_posted|date:"M j, Y, fa" }}</li>
-        </ul>
+		</ul>
+
+		<hr>
+		<h3>Comments</h3>
+		<div>
+			{% for comment in comments %}
+				<div>{{ comment.author.username }}</div>
+				<div>{{ comment.comment }}</div>
+				<p></p>
+			{% endfor %}
+		</div>
+		<div class ="content-section">
+			<form method="post">
+				{% csrf_token %}
+				<fieldset class="form-group">
+					<legend class="border-bottom mb-4">Create a comment:</legend>
+					{{ form|crispy }}
+				</fieldset>
+				<div class="form-group">
+					<button class="btn btn-outline-info" type="submit" value="comment">Submit</button>
+				</div>
+			</form>
+		</div>
+
     <div>
 {% endblock %}
