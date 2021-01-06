@@ -13,11 +13,10 @@ def index(request):
 def listing(request, id):
 
     print('#'*40)
-    print(request.user == 'AnonymousUser')
     if request.method == 'POST':
-        if request.user == 'AnonymousUser':
+        if str(request.user) == 'AnonymousUser':
             messages.error(request, f'You need to be signed in to comment.')
-            return redirect(f'/') 
+            return redirect(f'/listing/{id}')
         form = CreateComment(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)

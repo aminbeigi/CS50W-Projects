@@ -33,9 +33,19 @@
 		<h3>Comments</h3>
 		<div>
 			{% for comment in comments %}
-				<div>{{ comment.author.username }}</div>
-				<div>{{ comment.comment }}</div>
-				<p></p>
+			<div class="card">
+				<div class="media">
+					<img class="mr-3" src="/media/default_profile_image.png" alt="profile image" width="128px">
+				
+					<div class="media-body">
+						
+					<p><b>{{ comment.author.username }}</b> {{ comment.date_posted|date:"SHORT_DATE_FORMAT" }}</p>
+					<p>{{ comment.comment }}</p>
+					</div>
+
+				</div>
+			</div>
+
 			{% endfor %}
 		</div>
 		<div class ="content-section">
