@@ -1,0 +1,9 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Categories</h2>
+    {% for category in {{ Listing.objects.filter(category="uncategorised") }} %}
+        <p>{{ category }}</p>
+    {% endfor %}
+{% endblock %}
