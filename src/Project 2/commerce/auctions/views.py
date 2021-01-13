@@ -11,7 +11,7 @@ def index(request):
     })
 
 def listing(request, id):
-    if request.method == 'POST':
+    if request.method == 'POST' and 'comment-form' in request.POST:
         if str(request.user) == 'AnonymousUser':
             messages.error(request, f'You need to be signed in to comment.')
             return redirect(f'/listing/{id}')
@@ -22,6 +22,10 @@ def listing(request, id):
             comment.listing = Listing.objects.get(id=id)
             comment.save()
             messages.success(request, f'Created new comment.')
+            return redirect(f'/listing/{id}')
+    if request.method == 'POST' and 'bid-form' in request.POST:
+        if str(request.user) == 'AnonymousUser':
+            messages.error(request, f'You need to be signed in to bid.')
             return redirect(f'/listing/{id}')
     else:
         form = CreateComment()
