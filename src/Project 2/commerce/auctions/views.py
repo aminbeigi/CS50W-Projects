@@ -11,8 +11,6 @@ def index(request):
     })
 
 def listing(request, id):
-
-    print('#'*40)
     if request.method == 'POST':
         if str(request.user) == 'AnonymousUser':
             messages.error(request, f'You need to be signed in to comment.')
@@ -21,6 +19,7 @@ def listing(request, id):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
+            comment.listing = Listing.objects.get(id=id)
             comment.save()
             messages.success(request, f'Created new comment.')
             return redirect(f'/listing/{id}')

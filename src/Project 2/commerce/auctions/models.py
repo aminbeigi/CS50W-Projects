@@ -27,12 +27,11 @@ class Comment(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, default=None, related_name='comments')
 
     def __str__(self):
-        return f'comment by {self.author.username}'
+        return f"comment by {self.author.username} in {self.listing.title}"
 
-"""
 class Bid(models.Model):
     bid = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
@@ -40,5 +39,4 @@ class Bid(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"the bid of {self.listing}"
-"""
+        return f"bid by {self.listing} by {self.author.username} @ ${self.bid}"
