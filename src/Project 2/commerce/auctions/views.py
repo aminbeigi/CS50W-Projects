@@ -8,6 +8,7 @@ from .forms import CreateListing, CreateComment, CreateBid
 
 def index(request):
     return render(request, "auctions/index.html", {
+        # TODO: change into just Listing
         'Listing': Listing.objects.all()
     })
 
@@ -69,25 +70,20 @@ def create_listing(request):
         })
 
 def categories(request):
-    categories_lst = []
-    for category in categories_tuple:
-        print(category)
-        categories_lst.append(category[0])
-
     return render(request, 'auctions/categories.html', {
         'Listing': Listing,
-        'categories': categories_lst
+        'categories': categories_tuple
         })
 
-def display_categories(request, category):
+def display_category(request, category_name):
     categories_lst = []
     for category in categories_tuple:
-        print(category)
         categories_lst.append(category[0])
 
-    return render(request, 'auctions/categories.html', {
+    return render(request, 'auctions/category_display.html', {
         'Listing': Listing,
-        'categories': categories_lst
+        'categories': categories_lst,
+        'category_name': category_name
         })
 
 def login_redirect(request):

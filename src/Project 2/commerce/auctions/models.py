@@ -11,7 +11,7 @@ asdfasdf234
 
 categories = (
     ('gaming', 'Gaming'),
-    ('household_appliances', 'Household Applinaces')
+    ('housekeeping', 'Housekeeping')
 )
 
 class User(AbstractUser):
