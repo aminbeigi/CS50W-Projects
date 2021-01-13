@@ -9,15 +9,21 @@ John
 asdfasdf234
 '''
 
+categories = (
+    ('gaming', 'Gaming'),
+    ('household_appliances', 'Household Applinaces')
+)
+
 class User(AbstractUser):
     pass
 
 class Listing(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
+    title = models.CharField(max_length=25)
+    description = models.TextField(max_length=255)
     date_posted = models.DateTimeField(default=timezone.now)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal('0.01'))])
     image = models.ImageField(default='default.jpg', upload_to='images', blank=True)
+    category = models.CharField(max_length=100, default='uncategorised', choices=categories, blank=True)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -25,7 +31,7 @@ class Listing(models.Model):
         return f'{self.title}'
 
 class Comment(models.Model):
-    comment = models.TextField()
+    comment = models.TextField(max_length=100)
     date_posted = models.DateTimeField(default=timezone.now)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)

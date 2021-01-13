@@ -4,7 +4,6 @@ from django.db import IntegrityError
 from django.contrib import messages
 
 from .forms import UserRegisterForm
-#from auctions.models import User, Listing
 
 def register(request):
     if request.method == 'POST':

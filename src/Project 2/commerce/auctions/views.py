@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import User, Listing, Comment
+from .models import categories as categories_tuple
 from .forms import CreateListing, CreateComment, CreateBid
 
 def index(request):
@@ -65,6 +66,28 @@ def create_listing(request):
         form = CreateListing()
     return render(request, 'auctions/create_listing.html', {
         'form': form
+        })
+
+def categories(request):
+    categories_lst = []
+    for category in categories_tuple:
+        print(category)
+        categories_lst.append(category[0])
+
+    return render(request, 'auctions/categories.html', {
+        'Listing': Listing,
+        'categories': categories_lst
+        })
+
+def display_categories(request, category):
+    categories_lst = []
+    for category in categories_tuple:
+        print(category)
+        categories_lst.append(category[0])
+
+    return render(request, 'auctions/categories.html', {
+        'Listing': Listing,
+        'categories': categories_lst
         })
 
 def login_redirect(request):
