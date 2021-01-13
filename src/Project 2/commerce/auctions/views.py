@@ -32,8 +32,11 @@ def listing(request, id):
             bid = bid_form.save(commit=False)
             bid.author = request.user
             bid.listing = Listing.objects.get(id=id)
+            if (bid.price <= bid.listing.price):
+                messages.error(request, f"Bid of ${bid.price} is lower than listing price of ${bid.listing.price}.")
+                return redirect(f'/listing/{id}')
             bid.save()
-            messages.success(request, f'Placed bid of ${bid.price} on {bid.listing.title}.')
+            messages.success(request, f"Placed bid of ${bid.price} on {bid.listing.title}.")
             return redirect(f'/listing/{id}')
     else:
         comment_form = CreateComment()
