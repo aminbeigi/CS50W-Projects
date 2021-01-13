@@ -7,16 +7,27 @@
 
     <div class="container">
         <img src="{{ listing.image.url }}" alt="image">
-        <p>{{ listing.description }}</p>
+        <div>
+            <h4>Description</h4>
+            <p>{{ listing.description }}</p>
+        </div>
         <hr>
 
-        <div class="d-flex flex-row">
-            <div class="p-2">Active price: <h3>${{ listing.bids.all.last.price }}</h3></div>
-            <div class="p-2">by {{ listing.bids.all.last.author.username }}</h3></div>
-        </div>
-        
-        Listing price: <h3>${{ listing.price }}</h3>
-        <p>x bid(s) so far. Your bid is the current bid.</p>
+		<div>
+        {% if listing.bids.all.count == 0 %}
+			Active price: <h3>${{ listing.price }}</h3>
+		{% else %}
+            Active price: <h3>${{ listing.bids.all.last.price }}</h3>
+        {% endif %}
+		Listing price: <h3>${{ listing.price }}</h3>
+		</div>
+
+        {% if listing.bids.all.count == 0 %}
+            <p>Highest Bidder: No one has bidded yet, be the first!</p>
+        {% else %}
+            <p>Highest Bidder: {{ listing.bids.all.last.author.username }}</p>
+        {% endif %}
+        <p>{{ listing.bids.all.count }} bid(s) so far.</p> 
 
 		<div class ="content-section">
 			<form method="post">
