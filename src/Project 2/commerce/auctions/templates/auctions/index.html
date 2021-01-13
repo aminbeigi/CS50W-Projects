@@ -11,7 +11,11 @@
             <div class="media-body">
                 
                 <h5 class="mt-0"><a href="{% url 'listing' id=listing.id %}">{{ listing.title }}</a></h5>
-                <p>Price: ${{ listing.price }}</p>
+                    {% if listing.bids.all.count == 0 %}
+			            Listing price: <h3>${{ listing.price }}</h3>
+		            {% else %}
+                        Active price: <h3>${{ listing.bids.all.last.price }}</h3>
+                    {% endif %}
                 {{ listing.description }}
             <ul>
                 <li>Listed by: {{ listing.author }}</li>
