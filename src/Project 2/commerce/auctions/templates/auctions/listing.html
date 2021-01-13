@@ -8,20 +8,28 @@
     <div class="container">
         <img src="{{ listing.image.url }}" alt="image">
         <p>{{ listing.description }}</p>
-		<hr>
-        <h3>${{ listing.price }}</h3>
+        <hr>
 
+        <div class="d-flex flex-row">
+            <div class="p-2">Active price: <h3>${{ listing.bids.all.last.price }}</h3></div>
+            <div class="p-2">by {{ listing.bids.all.last.author.username }}</h3></div>
+        </div>
+        
+        Listing price: <h3>${{ listing.price }}</h3>
         <p>x bid(s) so far. Your bid is the current bid.</p>
 
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-            	<span class="input-group-text" id="basic-addon1">$</span>
-            </div>
-            <input type="text" class="form-control" placeholder="bid" aria-label="bid" aria-describedby="basic-addon1">
-          </div>
+		<div class ="content-section">
+			<form method="post">
+				{% csrf_token %}
+				<fieldset class="form-group">
+					{{ bid_form|crispy }}
+				</fieldset>
+				<div class="form-group">
+					<button class="btn btn-outline-info" type="submit" name="bid-form">Place Bid</button>
+				</div>
+			</form>
+        </div>
 
-		<button class="btn btn-primary" type="submit" name="bid-form">Place Bid</button>
-		
         <hr>
         <h3>Details</h3>
         <ul>
@@ -54,7 +62,7 @@
 				{% csrf_token %}
 				<fieldset class="form-group">
 					<legend class="border-bottom mb-4">Create a comment:</legend>
-					{{ form|crispy }}
+					{{ comment_form|crispy }}
 				</fieldset>
 				<div class="form-group">
 					<button class="btn btn-outline-info" type="submit" name="comment-form">Submit</button>

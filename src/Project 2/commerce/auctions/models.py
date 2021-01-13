@@ -33,10 +33,10 @@ class Comment(models.Model):
         return f"comment by {self.author.username} in {self.listing.title}"
 
 class Bid(models.Model):
-    bid = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
 
     def __str__(self):
-        return f"bid by {self.listing} by {self.author.username} @ ${self.bid}"
+        return f"bid by {self.listing} by {self.author.username} @ ${self.price}"

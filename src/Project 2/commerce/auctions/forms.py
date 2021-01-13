@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from auctions.models import Listing, Comment
+from auctions.models import Listing, Comment, Bid
 
 class CreateListing(ModelForm):
     class Meta:
@@ -10,3 +10,8 @@ class CreateComment(ModelForm):
     class Meta:
         model = Comment
         fields = ['comment']
+
+class CreateBid(ModelForm):
+    class Meta:
+        model = Bid
+        fields = ['price']
