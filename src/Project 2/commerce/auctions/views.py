@@ -40,7 +40,6 @@ def listing(request, id):
         bid_form = CreateBid()
     return render(request, "auctions/listing.html", {
         'listing': Listing.objects.get(id=id),
-        'comments': Comment.objects.all(), #TODO this doesn't need to be here
         'comment_form': comment_form,
         'bid_form': bid_form,
     })
