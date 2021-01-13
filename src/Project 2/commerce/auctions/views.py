@@ -32,6 +32,9 @@ def listing(request, id):
             bid = bid_form.save(commit=False)
             bid.author = request.user
             bid.listing = Listing.objects.get(id=id)
+            if (bid.author.username == bid.listing.author.username):
+                messages.error(request, f"You can not bid on your own listing.")
+                return redirect(f'/listing/{id}')
             if (bid.price <= bid.listing.price):
                 messages.error(request, f"Bid of ${bid.price} is lower than listing price of ${bid.listing.price}.")
                 return redirect(f'/listing/{id}')
@@ -50,13 +53,13 @@ def listing(request, id):
 @login_required
 def create_listing(request):
     if request.method == 'POST':
-        form = CreateListing(request.POST)
+        form = CreateListing(request.POST, request.FILES)
         if form.is_valid():
+            print(request.FILES)
             listing = form.save(commit=False)
             listing.author = request.user
             listing.save()
-            title = form.cleaned_data.get('title')
-            messages.success(request, f'Created new listing for {title}.')
+            messages.success(request, f'Created new listing for {listing.title}.')
             return redirect(f'/listing/{listing.id}')
     else:
         form = CreateListing()
