@@ -2,32 +2,44 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <h2>Listing: {{ listing.title }}</h2>
 
 
     <div class="container">
-        <img src="{{ listing.image.url }}" alt="image">
-        <div>
-            <h4>Description</h4>
+
+        <div class="media">
+            <img class="align-self-center mr-3" src="{{ listing.image.url }}" alt="listing image">
+            <div class="media-body">
+                <h5 class="mt-0">{{ listing.title }}</h5>
             <p>{{ listing.description }}</p>
+            </div>
+          </div>
+
+
+		<div class="row">
+            <div class="col-sm">
+                {% if listing.bids.all.count == 0 %}
+                    Active price: <h4>${{ listing.price }}</h4>
+        		{% else %}
+                    Active price: <h4>${{ listing.bids.all.last.price }}</h4>
+                {% endif %}
+            </div>
+            <div class="col-sm">
+                Listing price: <h4>${{ listing.price }}</h4>
+            </div>
         </div>
-        <hr>
 
-		<div>
+        <div class="container">
         {% if listing.bids.all.count == 0 %}
-			Active price: <h3>${{ listing.price }}</h3>
-		{% else %}
-            Active price: <h3>${{ listing.bids.all.last.price }}</h3>
-        {% endif %}
-		Listing price: <h3>${{ listing.price }}</h3>
-		</div>
-
-        {% if listing.bids.all.count == 0 %}
-            <p>Highest Bidder: No one has bidded yet, be the first!</p>
+            <div class="col">Highest Bidder: No one has bidded yet, be the first!</div>
+            <div class="col">0 bids so far.</div> 
+        {% elif listing.bids.all.count == 1 %}
+            <div class="col"><a href="/">{{ listing.bids.all.last.author.username }}</a> is the first and highest bidder!</div>
+            <div class="col">1 bid so far.</div> 
         {% else %}
-            <p>Highest Bidder: {{ listing.bids.all.last.author.username }}</p>
+            <div class="col"><a href="/">{{ listing.bids.all.last.author.username }}</a> is the highest bidder!</div>
+            <div class="col">{{ listing.bids.all.count }} bids so far.</div> 
         {% endif %}
-        <p>{{ listing.bids.all.count }} bid(s) so far.</p> 
+        </div>
 
 		<div class ="content-section">
 			<form method="post">
@@ -44,11 +56,10 @@
         <hr>
         <h3>Details</h3>
         <ul>
-            <li>Listed by: {{ listing.author }}</li>
-            <li>Created {{ listing.date_posted|date:"M j, Y, fa" }}</li>
+            <li>Listed by: {{ listing.author }} on {{ listing.date_posted|date:"d/m/y" }}</li>
+            <li>Category: {{ listing.category }}</li>
 		</ul>
 
-		<hr>
 		<h3>Comments</h3>
 		<div>
 			{% for comment in listing.comments.all %}
