@@ -46,7 +46,7 @@ class Comment(models.Model):
 class Bid(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal('0.01'))])
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
 
     def __str__(self):
@@ -54,10 +54,8 @@ class Bid(models.Model):
 
 class Watchlist(models.Model):
     # TODO: call this user
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")
-    # Watchlist('bob', 'Broom')
-    # Watchlist('bob', 'Cat')
 
     def __str__(self):
         return f"watchlist of {self.author.username}"

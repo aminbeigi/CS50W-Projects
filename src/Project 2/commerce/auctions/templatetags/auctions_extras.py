@@ -17,7 +17,7 @@ def item_in_watchlist(user, listing):
     if user == 'AnonymousUser':
         return False
         
-    watchlist = Watchlist.objects.filter(author__username__contains=user)
+    watchlist = Watchlist.objects.filter(user__username__contains=user)
     for i in watchlist:
         if (i.listing == listing):
             return True

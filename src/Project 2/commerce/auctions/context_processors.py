@@ -8,7 +8,7 @@ def calculate_watchlist_count(request):
             'watchlist_count': '0'
         }
 
-    watchlist_count = len(Watchlist.objects.filter(author__username__contains=user))
+    watchlist_count = len(Watchlist.objects.filter(user__username__contains=user))
     return {
         'watchlist_count': watchlist_count
     }

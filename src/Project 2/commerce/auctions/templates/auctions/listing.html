@@ -41,10 +41,10 @@
             <div class="col">Highest Bidder: No one has bidded yet, be the first!</div>
             <div class="col">0 bids so far.</div> 
         {% elif listing.bids.all.count == 1 %}
-            <div class="col"><a href="/">{{ listing.bids.all.last.author.username }}</a> is the first and highest bidder!</div>
+            <div class="col"><a href="/">{{ listing.bids.all.last.user.username }}</a> is the first and highest bidder!</div>
             <div class="col">1 bid so far.</div> 
         {% else %}
-            <div class="col"><a href="/">{{ listing.bids.all.last.author.username }}</a> is the highest bidder!</div>
+            <div class="col"><a href="/">{{ listing.bids.all.last.user.username }}</a> is the highest bidder!</div>
             <div class="col">{{ listing.bids.all.count }} bids so far.</div> 
         {% endif %}
         </div>

@@ -33,9 +33,9 @@ def listing(request, id):
         bid_form = CreateBid(request.POST)
         if bid_form.is_valid():
             bid = bid_form.save(commit=False)
-            bid.author = request.user
+            bid.user = request.user
             bid.listing = Listing.objects.get(id=id)
-            if (bid.author.username == bid.listing.author.username):
+            if (bid.user.username == bid.listing.author.username):
                 messages.error(request, f"You can not bid on your own listing.")
                 return redirect(f'/listing/{id}')
             if (bid.price <= bid.listing.price):
@@ -49,14 +49,14 @@ def listing(request, id):
             messages.error(request, f'You need to be signed in to use the watchlist.')
             return redirect(f'/listing/{id}')
         listing = Listing.objects.get(id=id)
-        w = Watchlist(author=request.user, listing=listing)
+        w = Watchlist(user=request.user, listing=listing)
         w.save()
         messages.success(request, f'Added to watchlist.')
         return redirect(f'/listing/{id}')
         
     if request.method == 'POST' and 'remove-watchlist-form' in request.POST:
         listing = Listing.objects.get(id=id)
-        w = Watchlist.objects.get(author=request.user, listing=listing)
+        w = Watchlist.objects.get(user=request.user, listing=listing)
         w.delete()
         messages.success(request, f'Removed from watchlist.')
         return redirect(f'/listing/{id}')
@@ -115,7 +115,7 @@ def display_category(request, category_name):
 def watchlist(request):
     watchlist_lst = []
 
-    for watchlist_item in Watchlist.objects.filter(author__username__contains=str(request.user)):
+    for watchlist_item in Watchlist.objects.filter(user__username__contains=str(request.user)):
         watchlist_lst.append(watchlist_item.listing)
 
     return render(request, 'auctions/watchlist.html', {
