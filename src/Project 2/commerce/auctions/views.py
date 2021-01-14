@@ -51,9 +51,15 @@ def listing(request, id):
         listing = Listing.objects.get(id=id)
         w = Watchlist(author=request.user, listing=listing)
         w.save()
-        messages.success(request, f'Added listing to watchlist.')
+        messages.success(request, f'Added to watchlist.')
         return redirect(f'/listing/{id}')
         
+    if request.method == 'POST' and 'remove-watchlist-form' in request.POST:
+        listing = Listing.objects.get(id=id)
+        w = Watchlist.objects.get(author=request.user, listing=listing)
+        w.delete()
+        messages.success(request, f'Removed from watchlist.')
+        return redirect(f'/listing/{id}')
     else:
         comment_form = CreateComment()
         bid_form = CreateBid()

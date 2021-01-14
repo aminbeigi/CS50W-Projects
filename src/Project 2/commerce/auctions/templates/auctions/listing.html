@@ -23,11 +23,12 @@
             <div class="col-sm">
                 Listing price: <h4>${{ listing.price }}</h4>
 			</div>
-			{{ user|item_in_watchlist:listing }}
+			
 			<div class="col-sm">
 				<form action="" method="post">
-                    {% if item_in_watchlist == 'True' %}
-						hisfsdffsdsdf
+				{% csrf_token %}
+                    {% if user|item_in_watchlist:listing %}
+						<button class="btn btn-secondary btn-lg" name="remove-watchlist-form">Remove from watchlist</button>
 					{% else %}
 						<button class="btn btn-primary btn-lg" name="add-watchlist-form">Add to watchlist</button>
                     {% endif %}
