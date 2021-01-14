@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Comment
-from .models import categories as categories_tuple
+from .models import User, Listing, Comment, Category
 from .forms import CreateListing, CreateComment, CreateBid
 
 def index(request):
@@ -57,7 +56,7 @@ def create_listing(request):
     if request.method == 'POST':
         form = CreateListing(request.POST, request.FILES)
         if form.is_valid():
-            print(request.FILES)
+            category = form.cleaned_data['category']
             listing = form.save(commit=False)
             listing.author = request.user
             listing.save()
@@ -70,9 +69,14 @@ def create_listing(request):
         })
 
 def categories(request):
+    categories_lst = []
+    for category in categories_tuple:
+        categories_lst.append(Listing.objects.filter(category=category)[0:])
+
     return render(request, 'auctions/categories.html', {
         'Listing': Listing,
         'categories': categories_tuple
+
         })
 
 def display_category(request, category_name):
