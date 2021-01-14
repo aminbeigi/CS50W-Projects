@@ -3,6 +3,9 @@
 
 {% block body %}
     <h2>Categories</h2>
+    <div class="container">
+        <div class="row">
+
     {% for category in categories %}
     {% if category.categories.count == 0 %}
     <div class="card" style="width: 18rem;">
@@ -25,4 +28,6 @@
       </div>
     {% endif %}
     {% endfor %}
+      </div>
+      </div>
 {% endblock %}

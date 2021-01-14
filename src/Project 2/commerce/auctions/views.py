@@ -26,6 +26,7 @@ def listing(request, id):
             messages.success(request, f'Created new comment.')
             return redirect(f'/listing/{id}')
     if request.method == 'POST' and 'bid-form' in request.POST:
+        # TODO: value checking over 12 digits
         if str(request.user) == 'AnonymousUser':
             messages.error(request, f'You need to be signed in to bid.')
             return redirect(f'/listing/{id}')
@@ -57,10 +58,10 @@ def create_listing(request):
     if request.method == 'POST':
         form = CreateListing(request.POST, request.FILES)
         if form.is_valid():
-            category = form.cleaned_data['category']
+            name = form.cleaned_data['name']
             listing = form.save(commit=False)
             # TODO: better to use first() here ???
-            listing.category = Category.objects.filter(category_slug=category)[0]
+            listing.category = Category.objects.filter(slug_name=name)[0]
             listing.author = request.user
             listing.save()
             messages.success(request, f'Created new listing for {listing.title}.')

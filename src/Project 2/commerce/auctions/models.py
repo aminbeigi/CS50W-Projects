@@ -24,7 +24,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=25)
     description = models.TextField(max_length=255)
     date_posted = models.DateTimeField(default=timezone.now)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal('0.01'))])
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal('0.01'))])
     image = models.ImageField(default='default.jpg', upload_to='images', blank=True)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="categories", null=True)
