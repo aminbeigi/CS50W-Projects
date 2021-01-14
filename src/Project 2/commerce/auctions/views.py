@@ -77,12 +77,11 @@ def categories(request):
 
 def display_category(request, category_name):
     categories_lst = []
-    for category in Listing.objects.filter(category="uncategorised"):
+    for category in Listing.objects.filter(category=category_name):
         categories_lst.append(category)
 
     return render(request, 'auctions/category_display.html', {
-        'Listing': Listing,
-        'categories': categories_lst,
+        'Listing': categories_lst,
         'category_name': category_name
         })
 

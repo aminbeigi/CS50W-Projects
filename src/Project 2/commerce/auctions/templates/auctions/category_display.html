@@ -1,9 +1,3 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/listing_layout.html" %}
 
-{% block body %}
-
-    <h2>Categories</h2>
-    {% for category in categories %}
-        <p>{{ category.title }}</p>
-    {% endfor %}
-{% endblock %}
+{% block listing-title %}Active Listings for {{ category_name }}{% endblock %}
