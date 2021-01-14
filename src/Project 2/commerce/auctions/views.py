@@ -77,13 +77,19 @@ def categories(request):
 
 def display_category(request, category_name):
     categories_lst = []
-    for category in categories_tuple:
-        categories_lst.append(category[0])
+    for category in Listing.objects.filter(category="uncategorised"):
+        categories_lst.append(category)
 
     return render(request, 'auctions/category_display.html', {
         'Listing': Listing,
         'categories': categories_lst,
         'category_name': category_name
+        })
+
+@login_required
+def watchlist(request):
+    return render(request, 'auctions/watchlist.html', {
+        #'Listing': Listing,
         })
 
 def login_redirect(request):
