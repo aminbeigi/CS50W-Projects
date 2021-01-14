@@ -3,7 +3,7 @@ from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Comment, Category
+from .models import User, Listing, Comment, Category, Watchlist
 from .forms import CreateListing, CreateComment, CreateBid
 
 def index(request):
@@ -85,6 +85,7 @@ def categories(request):
 
 def display_category(request, category_name):
     # TODO: add 404 checking
+    # TODO: better name instead of category
     categories_lst = []
     for category in Listing.objects.filter(category__slug_name__contains=category_name):
         categories_lst.append(category)
@@ -96,8 +97,14 @@ def display_category(request, category_name):
 
 @login_required
 def watchlist(request):
+    watchlist_lst = []
+
+    for watchlist_item in Watchlist.objects.filter(author__username__contains=str(request.user)):
+        watchlist_lst.append(watchlist_item.listing)
+
     return render(request, 'auctions/watchlist.html', {
-        #'Listing': Listing,
+        'Listing': watchlist_lst,
+        'user': str(request.user)
         })
 
 def login_redirect(request):

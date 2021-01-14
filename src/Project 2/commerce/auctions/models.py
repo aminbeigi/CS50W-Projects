@@ -51,3 +51,12 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"bid by {self.listing} by {self.author.username} @ ${self.price}"
+
+class Watchlist(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")
+    # Watchlist('bob', 'Broom')
+    # Watchlist('bob', 'Cat')
+
+    def __str__(self):
+        return f"watchlist of {self.author.username}"
