@@ -4,13 +4,25 @@
 {% block body %}
     <h2>Categories</h2>
     {% for category in categories %}
+    {% if category.categories.count == 0 %}
     <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ category.name }}</h5>
+            <p class="card-text">{{ category.description }}</p>
+        <button type="button" href="/" class="btn btn-primary btn-lg" disabled>Empty category</button>
+
+        </div>
+    </div>
+      
+      {% else %}
+      <div class="card" style="width: 18rem;">
         <img class="card-img-top" src="{{ category.categories.last.image.url }}" alt="card image cap">
         <div class="card-body">
             <h5 class="card-title">{{ category.name }}</h5>
             <p class="card-text">{{ category.description }}</p>
-        <a href="/listing/categories/{{ category.name_slug }}" class="btn btn-primary">Go to {{ category.name }}</a>
+        <a href="/listing/categories/{{ category.slug_name }}"><button type="button" class="btn btn-primary btn-lg">Go to {{ category.name }}</button></a>
         </div>
       </div>
+    {% endif %}
     {% endfor %}
 {% endblock %}

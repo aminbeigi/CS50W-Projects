@@ -2,10 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-
-
     <div class="container">
-
         <div class="media">
             <img class="align-self-center mr-3" src="{{ listing.image.url }}" alt="listing image">
             <div class="media-body">
@@ -13,7 +10,6 @@
             <p>{{ listing.description }}</p>
             </div>
           </div>
-
 
 		<div class="row">
             <div class="col-sm">
@@ -91,6 +87,5 @@
 				</div>
 			</form>
 		</div>
-
     <div>
 {% endblock %}

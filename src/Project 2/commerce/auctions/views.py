@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -78,13 +79,13 @@ def categories(request):
         print(category.categories.last())
 
     return render(request, 'auctions/categories.html', {
-        'Listing': Listing,
         'categories': categories_lst
         })
 
 def display_category(request, category_name):
+    # TODO: add 404 checking
     categories_lst = []
-    for category in Listing.objects.filter(category=category_name):
+    for category in Listing.objects.filter(category__slug_name__contains=category_name):
         categories_lst.append(category)
 
     return render(request, 'auctions/category_display.html', {

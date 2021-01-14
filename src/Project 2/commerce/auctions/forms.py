@@ -8,8 +8,6 @@ categories = [
     ('other', 'Other')
 ]
 
-categories = Category.objects.all().values_list('name_slug', 'name')
-
 class CreateListing(ModelForm):
     name = forms.ChoiceField(choices=categories, required=False) 
 

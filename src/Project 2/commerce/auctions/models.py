@@ -9,18 +9,13 @@ John
 asdfasdf234
 '''
 
-categories = (
-    ('gaming', 'Gaming'),
-    ('housekeeping', 'Housekeeping')
-)
-
 class User(AbstractUser):
     pass
 
 class Category(models.Model):
     name = models.CharField(max_length=25)
-    name_slug = models.CharField(max_length=25)
-    description = models.TextField(max_length=100)
+    slug_name = models.CharField(max_length=25)
+    description = models.TextField(max_length=255)
 
     def __str__(self):
         return f'{self.name}'
