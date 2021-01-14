@@ -1,20 +1,12 @@
 from django import forms
 from django.forms import ModelForm
-from auctions.models import Listing, Comment, Bid, Category
-
-categories = (
-    ('gaming', 'Gaming'),
-    ('housekeeping', 'Housekeeping'),
-    ('other', 'Other')
-)
-choices = Category.objects.all().values_list('category', 'category_slug')
+from auctions.models import Listing, Comment, Bid
 
 class CreateListing(ModelForm):
-    category = forms.MultipleChoiceField(choices=categories) 
 
     class Meta:
         model = Listing
-        fields = ['title', 'description', 'price', 'image', 'category']
+        fields = ['title', 'description', 'price', 'image']
 
 class CreateComment(ModelForm):
     class Meta:

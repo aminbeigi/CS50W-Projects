@@ -23,7 +23,7 @@ class Listing(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal('0.01'))])
     image = models.ImageField(default='default.jpg', upload_to='images', blank=True)
-    category = models.CharField(max_length=100, default='uncategorised', choices=categories, blank=True)
+    #category = models.CharField(max_length=100, choices=categories, blank=True, null=True)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 

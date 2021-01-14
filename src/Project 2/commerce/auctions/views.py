@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Comment, Category
+from .models import User, Listing, Comment
+from .models import categories as categories_tuple
 from .forms import CreateListing, CreateComment, CreateBid
 
 def index(request):
@@ -67,16 +68,11 @@ def create_listing(request):
     return render(request, 'auctions/create_listing.html', {
         'form': form
         })
-"""
-def categories(request):
-    categories_lst = []
-    for category in categories_tuple:
-        categories_lst.append(Listing.objects.filter(category=category)[-1:])
 
+def categories(request):
     return render(request, 'auctions/categories.html', {
         'Listing': Listing,
         'categories': categories_tuple
-
         })
 
 def display_category(request, category_name):
@@ -88,7 +84,7 @@ def display_category(request, category_name):
         'Listing': categories_lst,
         'category_name': category_name
         })
-"""
+
 @login_required
 def watchlist(request):
     return render(request, 'auctions/watchlist.html', {
