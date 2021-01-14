@@ -22,7 +22,6 @@ class Listing(models.Model):
     description = models.TextField(max_length=255)
     date_posted = models.DateTimeField(default=timezone.now)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal('0.01'))])
-    # stop this bar from going below 0
     image = models.ImageField(default='default.jpg', upload_to='images', blank=True)
     category = models.CharField(max_length=100, default='uncategorised', choices=categories, blank=True)
 
