@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from auctions.models import Listing, Comment, Bid
+from auctions.models import Listing, Comment, Bid, Category
 
 categories = [
     ('gaming', 'Gaming'),
@@ -8,8 +8,10 @@ categories = [
     ('other', 'Other')
 ]
 
+categories = Category.objects.all().values_list('name_slug', 'name')
+
 class CreateListing(ModelForm):
-    category = forms.ChoiceField(choices=categories, required=False) 
+    name = forms.ChoiceField(choices=categories, required=False) 
 
     class Meta:
         model = Listing

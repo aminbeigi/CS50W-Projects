@@ -58,6 +58,8 @@ def create_listing(request):
         if form.is_valid():
             category = form.cleaned_data['category']
             listing = form.save(commit=False)
+            # TODO: better to use first() here ???
+            listing.category = Category.objects.filter(category_slug=category)[0]
             listing.author = request.user
             listing.save()
             messages.success(request, f'Created new listing for {listing.title}.')
@@ -70,13 +72,12 @@ def create_listing(request):
 
 def categories(request):
     categories_lst = []
-    for category in categories_tuple:
-        categories_lst.append(Listing.objects.filter(category=category)[0:])
+    for category in Category.objects.all():
+        categories_lst.append(category)
 
     return render(request, 'auctions/categories.html', {
         'Listing': Listing,
-        'categories': categories_tuple
-
+        'categories': categories_lst
         })
 
 def display_category(request, category_name):
