@@ -74,6 +74,8 @@ def categories(request):
     categories_lst = []
     for category in Category.objects.all():
         categories_lst.append(category)
+        #print(Listing.objects.filter(category=category)[-1:0])
+        print(category.categories.last())
 
     return render(request, 'auctions/categories.html', {
         'Listing': Listing,

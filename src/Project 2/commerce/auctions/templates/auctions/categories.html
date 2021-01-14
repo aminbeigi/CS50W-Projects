@@ -5,11 +5,11 @@
     <h2>Categories</h2>
     {% for category in categories %}
     <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="..." alt="card image cap">
+        <img class="card-img-top" src="{{ category.categories.last.image.url }}" alt="card image cap">
         <div class="card-body">
             <h5 class="card-title">{{ category.name }}</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="/listing/categories/{{ category.0 }}" class="btn btn-primary">Go to {{ category.name }}</a>
+            <p class="card-text">{{ category.description }}</p>
+        <a href="/listing/categories/{{ category.name_slug }}" class="btn btn-primary">Go to {{ category.name }}</a>
         </div>
       </div>
     {% endfor %}
