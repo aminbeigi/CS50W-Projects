@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{% block listing-title %}{% endblock %}</h2>
+
+    {% for listing in Listing %}
+    <div class="card">
+        <div class="media">
+            <img class="align-self-center mr-3" src="{{ listing.image.url }}" alt="listing image">
+            
+            <div class="media-body">
+                
+                <h5 class="mt-0"><a href="{% url 'listing' id=listing.id %}">{{ listing.title }}</a></h5>
+                    {% if listing.bids.all.count == 0 %}
+			            Listing price: <h3>${{ listing.price }}</h3>
+		            {% else %}
+                        Active price: <h3>${{ listing.bids.all.last.price }}</h3>
+                    {% endif %}
+                {{ listing.description }}
+                <p class="text-muted">Created {{ listing.date_posted|date:"M j, Y, fa" }}</p>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
