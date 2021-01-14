@@ -9,16 +9,21 @@
             <img class="align-self-center mr-3" src="{{ listing.image.url }}" alt="listing image">
             
             <div class="media-body">
-                
                 <h5 class="mt-0"><a href="{% url 'listing' id=listing.id %}">{{ listing.title }}</a></h5>
-                    {% if listing.bids.all.count == 0 %}
-			            Listing price: <h3>${{ listing.price }}</h3>
-		            {% else %}
-                        Active price: <h3>${{ listing.bids.all.last.price }}</h3>
-                    {% endif %}
+                    <div class="listing-price">
+                        {% if listing.bids.all.count == 0 %}
+			                <h3>${{ listing.price }}</h3>
+                            - no bids
+                        {% elif listing.bids.all.count == 1 %}
+			                <h3>${{ listing.price }}</h3>
+                            - 1 bid
+		                {% else %}
+                            <h3>${{ listing.bids.all.last.price }}</h3>
+                            - {{ listing.bids.count }} bids
+                        {% endif %}
+                    </div>
                 {{ listing.description }}
                 <p class="text-muted">Created {{ listing.date_posted|date:"M j, Y, fa" }}</p>
-
             </div>
         </div>
     </div>

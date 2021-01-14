@@ -16,6 +16,10 @@ img {
     max-height: 250px;
 }
 
+.listing-price h2, h3 {
+    display: inline;
+}
+
 /*
 .form-control {
     width: 30%;
