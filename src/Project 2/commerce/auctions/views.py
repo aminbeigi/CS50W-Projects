@@ -44,6 +44,16 @@ def listing(request, id):
             bid.save()
             messages.success(request, f"Placed bid of ${bid.price} on {bid.listing.title}.")
             return redirect(f'/listing/{id}')
+    if request.method == 'POST' and 'add-watchlist-form' in request.POST:
+        if str(request.user) == 'AnonymousUser':
+            messages.error(request, f'You need to be signed in to use the watchlist.')
+            return redirect(f'/listing/{id}')
+        listing = Listing.objects.get(id=id)
+        w = Watchlist(author=request.user, listing=listing)
+        w.save()
+        messages.success(request, f'Added listing to watchlist.')
+        return redirect(f'/listing/{id}')
+        
     else:
         comment_form = CreateComment()
         bid_form = CreateBid()
@@ -51,6 +61,7 @@ def listing(request, id):
         'listing': Listing.objects.get(id=id),
         'comment_form': comment_form,
         'bid_form': bid_form,
+        'user': request.user
     })
 
 @login_required
@@ -77,7 +88,6 @@ def categories(request):
     for category in Category.objects.all():
         categories_lst.append(category)
         #print(Listing.objects.filter(category=category)[-1:0])
-        print(category.categories.last())
 
     return render(request, 'auctions/categories.html', {
         'categories': categories_lst

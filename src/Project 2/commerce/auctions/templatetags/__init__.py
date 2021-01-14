@@ -1,0 +1,1 @@
+from auctions.models import Watchlist

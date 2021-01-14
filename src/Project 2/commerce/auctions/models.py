@@ -53,6 +53,7 @@ class Bid(models.Model):
         return f"bid by {self.listing} by {self.author.username} @ ${self.price}"
 
 class Watchlist(models.Model):
+    # TODO: call this user
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")
     # Watchlist('bob', 'Broom')

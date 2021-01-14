@@ -1,10 +1,7 @@
 from django import template
+from . import Watchlist
 
 register = template.Library()
-
-@register.simple_tag
-def number_of_watchlist_items(request):
-    return 'cat'
 
 """
 @register.filter
@@ -14,3 +11,18 @@ def return_item(l, i):
     except:
         return None
 """
+
+@register.filter
+def item_in_watchlist(user, listing):
+    if user == 'AnonymousUser':
+        return {
+            'item_in_wishlist': False
+        }
+    print(user, listing)
+    
+    item_watchlist = Watchlist.objects.filter(author__username__contains=user)
+    print(item_watchlist)
+
+    return {
+        'item_in_watchlist': 'hi'
+    }
