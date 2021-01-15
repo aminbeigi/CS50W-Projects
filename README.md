@@ -1,38 +1,25 @@
 # CS50W
-A repository of projects and code for [CD50 Web Development Course](https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/)
+A repository of projects and code for [CS50 Web Development Course](https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/)
 
-### 1. Git
-- [Project 0](https://onoumenon.github.io/CS50W/project0/index.html)
+### 0. Git
+### 1. HTML, CSS
+### 2. Python
+- [Project 1](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%201)
 
-### 2. HTML, CSS
+### 3. Django
 - Project
 
-### 3. Flask
+### 4. SQL, Models, and Migrations  
 - Project
 
-### 4. SQL
+### 5. JavaScript
 - Project
 
-### 5. ORMs, APIs
+### 6. User Interfaces
 - Project
 
-### 6. JavaScript
+### 7. Testing, CI/CD
 - Project
 
-### 7. Front Ends
-- Project
-
-### 8. Django
-- Project
-
-### 9. Testing, CI/CD
-- Project
-
-### 10. GitHub, Travis CI
-- Project
-
-### 11. Scalability
-- Project
-
-### 12. Security
+### 8. Scalability and Security
 - Project
