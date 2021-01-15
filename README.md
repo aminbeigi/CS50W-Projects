@@ -8,7 +8,7 @@ A repository of projects and code for [CS50 Web Development Course](https://cour
 - [Project 1](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%201)
 
 ### 4. SQL, Models, and Migrations  
-- Project 2
+- [Project 2](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%202)
 
 ### 5. JavaScript
 ### 6. User Interfaces
