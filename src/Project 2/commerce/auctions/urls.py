@@ -9,5 +9,6 @@ urlpatterns = [
     path('listing/categories', views.categories, name='categories'),
     path('listing/categories/<str:category_name>', views.display_category, name='display_category'),
     path('listing/watchlist', views.watchlist, name='watchlist'),
+    path('user/<str:user>', views.user_profile, name='user_profile'),
     path('accounts/login/', views.login_redirect)
 ]

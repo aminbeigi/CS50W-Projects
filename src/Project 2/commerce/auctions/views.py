@@ -111,6 +111,13 @@ def display_category(request, category_name):
         'category_name': category_name
         })
 
+def user_profile(request, user):
+    profile_page_user = User.objects.get(username=user)
+    
+    return render(request, 'auctions/user_profile.html', {
+        'profile_page_user': profile_page_user
+        })
+
 @login_required
 def watchlist(request):
     watchlist_lst = []
@@ -120,7 +127,7 @@ def watchlist(request):
 
     return render(request, 'auctions/watchlist.html', {
         'Listing': watchlist_lst,
-        'user': str(request.user)
+        'watchlist_user': str(request.user)
         })
 
 def login_redirect(request):

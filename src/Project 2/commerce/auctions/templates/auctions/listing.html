@@ -41,10 +41,10 @@
             <div class="col">Highest Bidder: No one has bidded yet, be the first!</div>
             <div class="col">0 bids so far.</div> 
         {% elif listing.bids.all.count == 1 %}
-            <div class="col"><a href="/">{{ listing.bids.all.last.user.username }}</a> is the first and highest bidder!</div>
+            <div class="col"><a href="/user/{{ listing.bids.all.last.user.username }}">{{ listing.bids.all.last.user.username }}</a> is the first and highest bidder!</div>
             <div class="col">1 bid so far.</div> 
         {% else %}
-            <div class="col"><a href="/">{{ listing.bids.all.last.user.username }}</a> is the highest bidder!</div>
+            <div class="col"><a href="/user/{{ listing.bids.all.last.user.username }}">{{ listing.bids.all.last.user.username }}</a> is the highest bidder!</div>
             <div class="col">{{ listing.bids.all.count }} bids so far.</div> 
         {% endif %}
         </div>
@@ -76,7 +76,7 @@
 							<img class="mr-3" src="/media/default_profile_image.png" alt="profile image" width="128px">
 						
 							<div class="media-body">
-								<p><b>{{ comment.author.username }}</b> {{ comment.date_posted|date:"d/m/y" }}</p>
+								<p><b><a href="/user/{{ comment.author.username }}">{{ comment.author.username }}</a></b> {{ comment.date_posted|date:"d/m/y" }}</p>
 								<p>{{ comment.comment }}</p>
 							</div>
 
