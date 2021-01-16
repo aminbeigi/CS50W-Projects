@@ -8,8 +8,7 @@ from .forms import CreateListing, CreateComment, CreateBid
 
 def index(request):
     return render(request, "auctions/index.html", {
-        # TODO: change into just Listing
-        'Listing': Listing.objects.all()
+    'Listing': Listing.objects.all()
     })
 
 def listing(request, id):
@@ -26,7 +25,6 @@ def listing(request, id):
             messages.success(request, f'Created new comment.')
             return redirect(f'/listing/{id}')
     if request.method == 'POST' and 'bid-form' in request.POST:
-        # TODO: value checking over 12 digits
         if str(request.user) == 'AnonymousUser':
             messages.error(request, f'You need to be signed in to bid.')
             return redirect(f'/listing/{id}')
@@ -77,7 +75,6 @@ def create_listing(request):
         if form.is_valid():
             name = form.cleaned_data['name']
             listing = form.save(commit=False)
-            # TODO: better to use first() here ???
             listing.category = Category.objects.filter(slug_name=name)[0]
             listing.author = request.user
             listing.save()
@@ -100,8 +97,6 @@ def categories(request):
         })
 
 def display_category(request, category_name):
-    # TODO: add 404 checking
-    # TODO: better name instead of category
     categories_lst = []
     for category in Listing.objects.filter(category__slug_name__contains=category_name):
         categories_lst.append(category)

@@ -4,11 +4,6 @@ from django.utils import timezone
 from django.core.validators import MinValueValidator
 from decimal import Decimal
 
-'''
-John
-asdfasdf234
-'''
-
 class User(AbstractUser):
     pass
 
@@ -53,7 +48,6 @@ class Bid(models.Model):
         return f"bid by {self.listing} by {self.author.username} @ ${self.price}"
 
 class Watchlist(models.Model):
-    # TODO: call this user
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listings")
 
