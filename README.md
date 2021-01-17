@@ -12,7 +12,7 @@ A repository of projects and code for [CS50 Web Development Course](https://cour
 
 ### 5. JavaScript
 ### 6. User Interfaces
-- Project 3
+- [Project 3](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%203)
 
 ### 7. Testing, CI/CD
 - Project 4
