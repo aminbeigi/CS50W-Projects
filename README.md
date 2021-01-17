@@ -11,8 +11,8 @@ A repository of projects and code for [CS50 Web Development Course](https://cour
 - [Project 2](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%202)
 
 ### 5. JavaScript
+- [Project 3](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%203)
 ### 6. User Interfaces
-- Project 3
 
 ### 7. Testing, CI/CD
 - Project 4
