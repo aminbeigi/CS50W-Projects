@@ -11,13 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     load_mailbox('inbox');
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const element = document.getElementsByClassName('btn btn-primary')[0];
-    element.addEventListener('click', () => {
-        console.log("I've been clicked!")
-    });
-});
-
 function compose_email() {
     // Show compose view and hide other views
     document.querySelector('#emails-view').style.display = 'none';
@@ -27,6 +20,13 @@ function compose_email() {
     document.querySelector('#compose-recipients').value = '';
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const element = document.getElementsByClassName('btn btn-primary')[0];
+        element.addEventListener('click', () => {
+            send_mail(get_form_data());
+        });
+    });
 }
 
 function load_mailbox(mailbox) {
@@ -39,10 +39,26 @@ function load_mailbox(mailbox) {
 }
 
 const get_form_data = () => {
-    const submit_btn = document.querySelectorAll('input');
-    const form_element = document.querySelector('form');
-    const recipients = form_element[1].value;
-    const subject = form_element[2].value;
+    const form_element = document.querySelector('form'); const recipients = form_element[1].value;
+       const subject = form_element[2].value;
     const body = form_element[3].value;
-    console.log('submit_btn');
+    const data = {
+        'recipients': recipients,
+        'subject': subject,
+        'body': body
+    }
+    return data
 };
+
+
+const send_mail = (data) => {
+    fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+          // Print result
+          console.log(result);
+      })
+    };
