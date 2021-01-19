@@ -21,11 +21,9 @@ function compose_email() {
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const element = document.getElementsByClassName('btn btn-primary')[0];
-        element.addEventListener('click', () => {
-            send_mail(get_form_data());
-        });
+    const element = document.getElementsByClassName('btn btn-primary')[0];
+    element.addEventListener('click', () => {
+        send_mail(get_form_data());
     });
 }
 
@@ -36,6 +34,26 @@ function load_mailbox(mailbox) {
 
     // Show the mailbox name
     document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+    if (mailbox === 'inbox') {
+        const table_element = document.createElement('table');
+        table_element.setAttribute('class', 'table table-sm table-dark');
+        document.querySelector('#emails-view').append(table_element);
+
+        const table_body_element = document.createElement('tbody');
+        table_element.appendChild(table_body_element);
+
+        const table_row_element = document.createElement('tr');
+        table_body_element.appendChild(table_row_element);
+
+        const array =  ['test', 'test2', 'test3'];
+
+        array.forEach((i) => {
+            const table_data_element = document.createElement('td');
+            table_data_element.innerHTML = i;
+            table_body_element.appendChild(table_data_element);
+        })
+    }
 }
 
 const get_form_data = () => {
@@ -50,15 +68,22 @@ const get_form_data = () => {
     return data
 };
 
-
 const send_mail = (data) => {
     fetch(API_URL, {
         method: 'POST',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data
+    )
       })
       .then(response => response.json())
-      .then(result => {
-          // Print result
-          console.log(result);
-      })
     };
+
+const get_data = (api_url) => {
+    fetch(api_url)
+        .then(reponse => response.json())  
+        .then(() => {
+            return data;
+        })
+        .catch((error) => {
+            console.error("Fetch error: ", error);
+        });
+}

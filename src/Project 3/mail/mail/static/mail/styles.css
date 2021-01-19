@@ -1,3 +1,7 @@
+body {
+    background-color: #eeeeee;
+}
+
 textarea {
     min-height: 400px;
 }
