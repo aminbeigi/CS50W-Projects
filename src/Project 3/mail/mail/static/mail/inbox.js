@@ -49,7 +49,12 @@ function load_mailbox(mailbox) {
             if (data !== undefined) {
                 data.forEach(email => {
                         const tb_element = document.createElement('tbody');
+                        tb_element.setAttribute('id', email['id']);
                         t_element.appendChild(tb_element);
+                        tb_element.addEventListener('click', () => {
+                            show_email(email['id']);
+                        });
+                        
                     for (col = 0; col < 3; ++col) {
                         const category = INBOX_CATEGORIES[col]; 
                         const td_element = document.createElement('td');
@@ -98,15 +103,8 @@ const send_mail = (data) => {
       .then(response => response.json())
     };
 
-const get_data2 = (api_url) => {
-    return fetch(API_URL + '/emails/inbox')
-        .then(response => response.json())  
-        .then(data => {
-            return data;
-        })
-        .catch((error) => {
-            console.error("Fetch error: ", error);
-        });
+const show_email = id => {
+    alert(id);
 }
 
 const fetch_data = async (api_url) => {
