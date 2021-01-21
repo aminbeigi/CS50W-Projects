@@ -53,10 +53,21 @@ function load_mailbox(mailbox) {
                     for (col = 0; col < 3; ++col) {
                         const category = INBOX_CATEGORIES[col]; 
                         const td_element = document.createElement('td');
-                        if (category === 'body') {
-                            td_element.innerHTML = `sfsfd${email[category].slice(0,50)}...`
+                        if (category === 'sender') {
+                            td_element.innerHTML = email[category];
                         }
-                        td_element.innerHTML = email[category].slice(0,50);
+
+                        if (category === 'body') {
+                            if (email[category].length >= 50) {
+                                td_element.innerHTML = `${email[category].slice(0,50)}...`;
+                            } else {
+                                td_element.innerHTML = email[category];
+                            }
+                        }
+                        
+                        if (category === 'timestamp') {
+                            td_element.innerHTML = email[category];
+                        }
                         tb_element.appendChild(td_element);
                     }
                 })
