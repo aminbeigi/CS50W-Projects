@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function compose_email() {
     // Show compose view and hide other views
     document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#single-email-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'block';
   
     // Clear out composition fields
@@ -31,6 +32,7 @@ function compose_email() {
 function load_mailbox(mailbox) {
     // Show the mailbox and hide other views
     document.querySelector('#emails-view').style.display = 'block';
+    document.querySelector('#single-email-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'none';
 
     // Show the mailbox name
@@ -51,8 +53,9 @@ function load_mailbox(mailbox) {
                         const tb_element = document.createElement('tbody');
                         tb_element.setAttribute('id', email['id']);
                         t_element.appendChild(tb_element);
+                        // show an email
                         tb_element.addEventListener('click', () => {
-                            show_email(email['id']);
+                            show_email(email);
                         });
                         
                     for (col = 0; col < 3; ++col) {
@@ -103,8 +106,31 @@ const send_mail = (data) => {
       .then(response => response.json())
     };
 
-const show_email = id => {
-    alert(id);
+const show_email = data => {
+    document.querySelector('#emails-view').style.display = 'none';
+    // TODO: make func that empties email view
+    document.querySelector('#single-email-view').remove();
+    document.querySelector('#single-email-view').style.display = 'block';
+
+
+    const container_element = document.createElement('div');
+    container_element.setAttribute('class', 'container');
+    document.querySelector('#single-email-view').append(container_element);
+
+    const subject_container_element = document.createElement('div');
+    subject_container_element.setAttribute('class', 'container');
+    container_element.append(subject_container_element);
+    const subject_element = document.createElement('p');
+    subject_element.innerHTML = `<h3>${data['subject']}</h3>`;
+    subject_container_element.appendChild(subject_element);
+    
+    const body_container_element = document.createElement('div');
+    body_container_element.setAttribute('class', 'body-container');
+    container_element.append(body_container_element);
+    const body_element = document.createElement('p');
+    body_element.innerHTML = data['body'];
+    body_container_element.appendChild(body_element);
+    
 }
 
 const fetch_data = async (api_url) => {

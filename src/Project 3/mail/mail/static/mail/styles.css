@@ -9,3 +9,10 @@ textarea {
 tbody:hover {
     background-color: rgb(207, 12, 12);
 }
+
+.body-container {
+    background-color: #e6e6e6;
+    width: 80%;
+    height: 500px;
+    word-wrap: break-word;
+}
