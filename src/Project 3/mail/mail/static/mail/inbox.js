@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:8000/emails'
+const API_URL = 'http://localhost:8000'
+const INBOX_CONTENTS = ['sender', 'body', 'timestamp']
 
 document.addEventListener('DOMContentLoaded', function() {
     // Use buttons to toggle between views
@@ -36,23 +37,29 @@ function load_mailbox(mailbox) {
     document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
     if (mailbox === 'inbox') {
-        const table_element = document.createElement('table');
-        table_element.setAttribute('class', 'table table-sm table-dark');
-        document.querySelector('#emails-view').append(table_element);
+        const t_element = document.createElement('table');
+        t_element.setAttribute('class', 'table table-sm table-dark');
+        document.querySelector('#emails-view').append(t_element);
 
-        const table_body_element = document.createElement('tbody');
-        table_element.appendChild(table_body_element);
+        const tb_element = document.createElement('tbody');
+        t_element.appendChild(tb_element);
 
-        const table_row_element = document.createElement('tr');
-        table_body_element.appendChild(table_row_element);
+        const tr_element = document.createElement('tr');
+        tb_element.appendChild(tr_element);
 
-        const array =  ['test', 'test2', 'test3'];
+        const promise = fetch_data(API_URL + '/emails/inbox');
+        promise.then(data => {
+            if (data !== undefined) {
+                data.forEach(email => {
+                    for (col = 0; col < 3; ++col) {
+                        const td_element = document.createElement('td');
+                        td_element.innerHTML = email[INBOX_CONTENTS[col]];
+                        tb_element.appendChild(td_element);
+                    }
+                })
+            }
+        }) 
 
-        array.forEach((i) => {
-            const table_data_element = document.createElement('td');
-            table_data_element.innerHTML = i;
-            table_body_element.appendChild(table_data_element);
-        })
     }
 }
 
@@ -69,7 +76,7 @@ const get_form_data = () => {
 };
 
 const send_mail = (data) => {
-    fetch(API_URL, {
+    fetch(API_URL + '/emails', {
         method: 'POST',
         body: JSON.stringify(data
     )
@@ -77,13 +84,19 @@ const send_mail = (data) => {
       .then(response => response.json())
     };
 
-const get_data = (api_url) => {
-    fetch(api_url)
-        .then(reponse => response.json())  
-        .then(() => {
+const get_data2 = (api_url) => {
+    return fetch(API_URL + '/emails/inbox')
+        .then(response => response.json())  
+        .then(data => {
             return data;
         })
         .catch((error) => {
             console.error("Fetch error: ", error);
         });
+}
+
+const fetch_data = async (api_url) => {
+    const response = await fetch(api_url);
+    const data = await response.json();
+    return data;
 }
