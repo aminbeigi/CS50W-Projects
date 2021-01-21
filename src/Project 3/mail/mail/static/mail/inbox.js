@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:8000'
-const INBOX_CONTENTS = ['sender', 'body', 'timestamp']
+const INBOX_CATEGORIES = ['sender', 'body', 'timestamp']
 
 document.addEventListener('DOMContentLoaded', function() {
     // Use buttons to toggle between views
@@ -44,16 +44,19 @@ function load_mailbox(mailbox) {
         const tb_element = document.createElement('tbody');
         t_element.appendChild(tb_element);
 
-        const tr_element = document.createElement('tr');
-        tb_element.appendChild(tr_element);
-
         const promise = fetch_data(API_URL + '/emails/inbox');
         promise.then(data => {
             if (data !== undefined) {
                 data.forEach(email => {
+                        const tb_element = document.createElement('tbody');
+                        t_element.appendChild(tb_element);
                     for (col = 0; col < 3; ++col) {
+                        const category = INBOX_CATEGORIES[col]; 
                         const td_element = document.createElement('td');
-                        td_element.innerHTML = email[INBOX_CONTENTS[col]];
+                        if (category === 'body') {
+                            td_element.innerHTML = `sfsfd${email[category].slice(0,50)}...`
+                        }
+                        td_element.innerHTML = email[category].slice(0,50);
                         tb_element.appendChild(td_element);
                     }
                 })
