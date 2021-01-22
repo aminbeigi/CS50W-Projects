@@ -79,7 +79,7 @@ function load_mailbox(mailbox) {
                 const category = INBOX_CATEGORIES[col]; 
                 const td_element = document.createElement('td');
                 if (category === 'sender') {
-                    td_element.innerHTML = `<i class="fas fa-archive"></i> ${email[category]}`;
+                    td_element.innerHTML = `<span><i class="fas fa-archive"></i></span> ${email[category]}`;
                 }
 
                 if (category === 'body') {
@@ -95,6 +95,19 @@ function load_mailbox(mailbox) {
                 }
                 tb_element.appendChild(td_element);
             }
+        })
+
+        // make icons clickable
+        const icons = document.querySelectorAll('.fas');
+        icons.forEach(icon => {
+            icon.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (icon.classList.contains('archived')) {
+                    icon.setAttribute('class', 'fas fa-archive');
+                } else {
+                    icon.setAttribute('class', 'fas fa-archive archived');
+                }
+            })
         })
     }) 
     

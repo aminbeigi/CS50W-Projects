@@ -23,12 +23,13 @@ tbody:hover {
     width: 80%;
     height: auto;
     word-wrap: break-word;
-}
-.td {
-    font-weight: bold;
-}
+} 
 
-.read {
+.td { 
+    font-weight: bold; 
+} 
+
+.read { 
     opacity: 66%;
     font-weight: 300;
 }
@@ -36,4 +37,16 @@ tbody:hover {
 .table-dark {
     background-color: #17191b;
     font-weight: 700;
+}
+
+
+.fa-archive {
+    opacity: 20%;
+}
+    .fa-archive:hover {
+        opacity: 100%;
+    }
+
+.archived {
+    opacity: 100%;
 }
