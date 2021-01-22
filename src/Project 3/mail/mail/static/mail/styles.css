@@ -8,14 +8,14 @@ textarea {
 }
 
 tbody:hover {
-    background-color: rgb(207, 12, 12);
+    background-color:#474e55;
 }
 
 .subject-container {
     margin-bottom: 10px;
 }
     .subject-container p {
-        margin:0;
+        margin: 0;
     }
 
 .body-container {
@@ -23,4 +23,17 @@ tbody:hover {
     width: 80%;
     height: auto;
     word-wrap: break-word;
+}
+.td {
+    font-weight: bold;
+}
+
+.read {
+    opacity: 66%;
+    font-weight: 300;
+}
+
+.table-dark {
+    background-color: #17191b;
+    font-weight: 700;
 }

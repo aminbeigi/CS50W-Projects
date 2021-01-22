@@ -25,64 +25,79 @@ function compose_email() {
 
     const element = document.getElementsByClassName('btn btn-primary')[0];
     element.addEventListener('click', () => {
-        send_mail(get_form_data());
+        const data = get_form_data();
+        send_mail(data);
     });
 }
 
 function load_mailbox(mailbox) {
-    // Show the mailbox and hide other views
+    // show the mailbox and hide other views
     document.querySelector('#emails-view').style.display = 'block';
     document.querySelector('#single-email-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'none';
 
-    // Show the mailbox name
+    // show the mailbox name
     document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+    // initialise table
+    const t_element = document.createElement('table');
+    t_element.setAttribute('class', 'table table-dark');
+    document.querySelector('#emails-view').append(t_element);
 
-    if (mailbox === 'inbox') {
-        const t_element = document.createElement('table');
-        t_element.setAttribute('class', 'table table-sm table-dark');
-        document.querySelector('#emails-view').append(t_element);
+    const tb_element = document.createElement('tbody');
+    t_element.appendChild(tb_element);
 
-        const tb_element = document.createElement('tbody');
-        t_element.appendChild(tb_element);
+    const promise = fetch_data(API_URL + '/emails/inbox');
 
-        const promise = fetch_data(API_URL + '/emails/inbox');
-        promise.then(data => {
-            if (data !== undefined) {
-                data.forEach(email => {
-                        const tb_element = document.createElement('tbody');
-                        tb_element.setAttribute('id', email['id']);
-                        t_element.appendChild(tb_element);
-                        // show an email
-                        tb_element.addEventListener('click', () => {
-                            show_email(email);
-                        });
-                        
-                    for (col = 0; col < 3; ++col) {
-                        const category = INBOX_CATEGORIES[col]; 
-                        const td_element = document.createElement('td');
-                        if (category === 'sender') {
-                            td_element.innerHTML = email[category];
-                        }
+    promise.then(data => {
+        var emails = [];
+        const user = document.querySelector('h2').innerHTML
+        if (mailbox === 'inbox') {
+            var emails = data;
+        } else if (mailbox === 'sent') {
+            data.forEach(email => {
+                if (email['sender'] === user) {           
+                    emails.push(email);
+                }
+            })
+        }
+        emails.forEach(email => {
+                const tb_element = document.createElement('tbody');
+                tb_element.setAttribute('id', email['id']);
+                if (email['read'])                
+                    tb_element.setAttribute('class', 'read');
 
-                        if (category === 'body') {
-                            if (email[category].length >= 50) {
-                                td_element.innerHTML = `${email[category].slice(0,50)}...`;
-                            } else {
-                                td_element.innerHTML = email[category];
-                            }
-                        }
-                        
-                        if (category === 'timestamp') {
-                            td_element.innerHTML = email[category];
-                        }
-                        tb_element.appendChild(td_element);
+                t_element.appendChild(tb_element);
+                // view an email
+                tb_element.addEventListener('click', () => {
+                    if (!(email['read'])) {
+                        email['read'] = 'true';
                     }
-                })
-            }
-        }) 
+                    show_email(email);
+                });
+                
+            for (col = 0; col < 3; ++col) {
+                const category = INBOX_CATEGORIES[col]; 
+                const td_element = document.createElement('td');
+                if (category === 'sender') {
+                    td_element.innerHTML = email[category];
+                }
 
-    }
+                if (category === 'body') {
+                    if (email[category].length >= 50) {
+                        td_element.innerHTML = `${email[category].slice(0,50)}...`;
+                    } else {
+                        td_element.innerHTML = email[category];
+                    }
+                }
+                
+                if (category === 'timestamp') {
+                    td_element.innerHTML = email[category];
+                }
+                tb_element.appendChild(td_element);
+            }
+        })
+    }) 
+    
 }
 
 const get_form_data = () => {
@@ -102,9 +117,12 @@ const send_mail = (data) => {
         method: 'POST',
         body: JSON.stringify(data
     )
-      })
-      .then(response => response.json())
-    };
+    })
+    .then(response => response.json())
+    .catch(error => {
+        console.log('error: ', error)
+    })
+};
 
 const show_email = data => {
     document.querySelector('#emails-view').style.display = 'none';
@@ -143,6 +161,12 @@ const show_email = data => {
 
 const fetch_data = async (api_url) => {
     const response = await fetch(api_url);
+    const data = await response.json();
+    return data;
+}
+
+const mark_read = async (id) => {
+    const response = await fetch(API_URL + `/emails/${id}`);
     const data = await response.json();
     return data;
 }
