@@ -1,4 +1,4 @@
-body {
+body, html {
     background-color: #eeeeee;
 }
 
@@ -10,9 +10,17 @@ tbody:hover {
     background-color: rgb(207, 12, 12);
 }
 
+.subject-container {
+    margin-bottom: 10px;
+}
+    .subject-container p,
+    .subject-container h5 {
+        display: inline;
+    }
+
 .body-container {
     background-color: #e6e6e6;
     width: 80%;
-    height: 500px;
+    height: auto;
     word-wrap: break-word;
 }

@@ -108,21 +108,28 @@ const send_mail = (data) => {
 
 const show_email = data => {
     document.querySelector('#emails-view').style.display = 'none';
-    // TODO: make func that empties email view
-    document.querySelector('#single-email-view').remove();
+    empty_element('#single-email-view');
     document.querySelector('#single-email-view').style.display = 'block';
-
 
     const container_element = document.createElement('div');
     container_element.setAttribute('class', 'container');
     document.querySelector('#single-email-view').append(container_element);
 
     const subject_container_element = document.createElement('div');
-    subject_container_element.setAttribute('class', 'container');
+    subject_container_element.setAttribute('class', 'subject-container');
+
+    const user = document.querySelector('h2').innerHTML
+    if (data['recipients'].length === 1 && data['recipients'][0] === user) {
+        subject_container_element.innerHTML = `<h3>${data['subject']}</h3><p>from: </p><h5>${data['sender']}</h5>
+                                                <br>
+                                                <p>to: </p><h5>me</h5>`;
+    } else {
+        subject_container_element.innerHTML = `<h3>${data['subject']}</h3><p>from: </p><h5>${data['sender']}</h5>
+                                                <br>
+                                                <p>to: </p><h5>${data['recipients']}</h5>`;
+    }
     container_element.append(subject_container_element);
-    const subject_element = document.createElement('p');
-    subject_element.innerHTML = `<h3>${data['subject']}</h3>`;
-    subject_container_element.appendChild(subject_element);
+
     
     const body_container_element = document.createElement('div');
     body_container_element.setAttribute('class', 'body-container');
@@ -137,4 +144,8 @@ const fetch_data = async (api_url) => {
     const response = await fetch(api_url);
     const data = await response.json();
     return data;
+}
+
+const empty_element = (attribute_value) => {
+    document.querySelector(attribute_value).innerHTML = '';
 }
