@@ -115,6 +115,7 @@ const show_email = data => {
     container_element.setAttribute('class', 'container');
     document.querySelector('#single-email-view').append(container_element);
 
+    // container 1 
     const subject_container_element = document.createElement('div');
     subject_container_element.setAttribute('class', 'subject-container');
 
@@ -128,16 +129,21 @@ const show_email = data => {
                                                 <br>
                                                 <p>to: </p><h5>${data['recipients']}</h5>`;
     }
+    
+    const time_element = document.createElement('div');
+    time_element.setAttribute('class', 'time-container');
+    time_element.innerHTML = data['timestamp'];
+    subject_container_element.append(time_element);
+
     container_element.append(subject_container_element);
 
-    
+    // container 2
     const body_container_element = document.createElement('div');
     body_container_element.setAttribute('class', 'body-container');
     container_element.append(body_container_element);
     const body_element = document.createElement('p');
     body_element.innerHTML = data['body'];
     body_container_element.appendChild(body_element);
-    
 }
 
 const fetch_data = async (api_url) => {
