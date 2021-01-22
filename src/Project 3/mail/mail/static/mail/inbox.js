@@ -79,7 +79,7 @@ function load_mailbox(mailbox) {
                 const category = INBOX_CATEGORIES[col]; 
                 const td_element = document.createElement('td');
                 if (category === 'sender') {
-                    td_element.innerHTML = email[category];
+                    td_element.innerHTML = `<i class="fas fa-archive"></i> ${email[category]}`;
                 }
 
                 if (category === 'body') {
