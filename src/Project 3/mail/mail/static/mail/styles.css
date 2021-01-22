@@ -36,9 +36,8 @@ tbody:hover {
 
 .table-dark {
     background-color: #17191b;
-    font-weight: 700;
+    font-weight: 500;
 }
-
 
 .fa-archive {
     opacity: 20%;

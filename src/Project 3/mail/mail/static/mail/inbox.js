@@ -1,14 +1,15 @@
 const API_URL = 'http://localhost:8000'
 const INBOX_CATEGORIES = ['sender', 'body', 'timestamp']
 
+// TODO: remove empty tbody
 document.addEventListener('DOMContentLoaded', function() {
-    // Use buttons to toggle between views
+    // use buttons to toggle between views
     document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
     document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
     document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
     document.querySelector('#compose').addEventListener('click', compose_email);
     
-    // By default, load the inbox
+    // by default, load the inbox
     load_mailbox('inbox');
 });
 
@@ -46,21 +47,22 @@ function load_mailbox(mailbox) {
     const tb_element = document.createElement('tbody');
     t_element.appendChild(tb_element);
 
-    const promise = fetch_data(API_URL + '/emails/inbox');
+    if (mailbox === 'inbox') {
+        var promise = fetch_data(API_URL + '/emails/inbox');
+    } else if (mailbox === 'sent') {
+        var promise = fetch_data(API_URL + '/emails/sent');
+    } else if (mailbox === 'archive') {
+        var promise = fetch_data(API_URL + '/emails/archive');
+    }
 
     promise.then(data => {
-        var emails = [];
-        const user = document.querySelector('h2').innerHTML
-        if (mailbox === 'inbox') {
-            var emails = data;
-        } else if (mailbox === 'sent') {
-            data.forEach(email => {
-                if (email['sender'] === user) {           
-                    emails.push(email);
-                }
-            })
-        }
+        var emails = data;
         emails.forEach(email => {
+                // make func for this
+                if (mailbox === 'sent' && email['archived'] === true) {
+                    return;
+                }
+
                 const tb_element = document.createElement('tbody');
                 tb_element.setAttribute('id', email['id']);
                 if (email['read'])                
@@ -80,6 +82,9 @@ function load_mailbox(mailbox) {
                 const td_element = document.createElement('td');
                 if (category === 'sender') {
                     td_element.innerHTML = `<span><i class="fas fa-archive"></i></span> ${email[category]}`;
+                    if (mailbox === 'archive') {
+                        td_element.innerHTML = `<span><i class="fas fa-archive archived"></i></span> ${email[category]}`;
+                    }
                 }
 
                 if (category === 'body') {
@@ -102,9 +107,12 @@ function load_mailbox(mailbox) {
         icons.forEach(icon => {
             icon.addEventListener('click', (event) => {
                 event.stopPropagation();
+                const id = icon.closest('tbody').id;
                 if (icon.classList.contains('archived')) {
+                    mark_archive_status(id, false);
                     icon.setAttribute('class', 'fas fa-archive');
                 } else {
+                    mark_archive_status(id, true);
                     icon.setAttribute('class', 'fas fa-archive archived');
                 }
             })
@@ -177,11 +185,28 @@ const fetch_data = async (api_url) => {
     return data;
 }
 
+// TODO: async?
 const mark_read = async (id) => {
     fetch(`${API_URL}/emails/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
             read: true
+        })
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log('Success:', result);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+const mark_archive_status = async (id, status) => {
+    fetch(`${API_URL}/emails/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            archived: status
         })
       })
       .then(response => response.json())
