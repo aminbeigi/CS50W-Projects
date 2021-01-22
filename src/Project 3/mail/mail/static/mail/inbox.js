@@ -70,7 +70,7 @@ function load_mailbox(mailbox) {
                 // view an email
                 tb_element.addEventListener('click', () => {
                     if (!(email['read'])) {
-                        email['read'] = 'true';
+                        mark_read(email['id']);
                     }
                     show_email(email);
                 });
@@ -156,8 +156,7 @@ const show_email = data => {
     body_container_element.setAttribute('class', 'body-container');
     container_element.append(body_container_element);
     body_container_element.innerHTML = data['body'];
-    container_element.appendChild(body_container_element);
-}
+    container_element.appendChild(body_container_element); }
 
 const fetch_data = async (api_url) => {
     const response = await fetch(api_url);
@@ -166,9 +165,19 @@ const fetch_data = async (api_url) => {
 }
 
 const mark_read = async (id) => {
-    const response = await fetch(API_URL + `/emails/${id}`);
-    const data = await response.json();
-    return data;
+    fetch(`${API_URL}/emails/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            read: true
+        })
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log('Success:', result);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 }
 
 const empty_element = (attribute_value) => {
