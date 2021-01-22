@@ -19,3 +19,5 @@ A repository of projects and code for [CS50 Web Development Course](https://cour
 
 ### 8. Scalability and Security
 - Project Final
+
+TODO: add pics
