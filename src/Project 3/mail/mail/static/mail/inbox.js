@@ -119,31 +119,26 @@ const show_email = data => {
     const subject_container_element = document.createElement('div');
     subject_container_element.setAttribute('class', 'subject-container');
 
-    const user = document.querySelector('h2').innerHTML
-    if (data['recipients'].length === 1 && data['recipients'][0] === user) {
-        subject_container_element.innerHTML = `<h3>${data['subject']}</h3><p>from: </p><h5>${data['sender']}</h5>
-                                                <br>
-                                                <p>to: </p><h5>me</h5>`;
-    } else {
-        subject_container_element.innerHTML = `<h3>${data['subject']}</h3><p>from: </p><h5>${data['sender']}</h5>
-                                                <br>
-                                                <p>to: </p><h5>${data['recipients']}</h5>`;
-    }
-    
-    const time_element = document.createElement('div');
-    time_element.setAttribute('class', 'time-container');
-    time_element.innerHTML = data['timestamp'];
-    subject_container_element.append(time_element);
+    subject_container_element.innerHTML = `<p><b>From:</b> ${data['sender']}</p>
+                                            <p><b>To:</b> ${data['recipients']}</p>
+                                            <p><b>Subject: </b>${data['subject']}</p>
+                                            <p><b>Timestamp: </b>${data['timestamp']}</p>
+                                            <button class="btn btn-sm btn-outline-primary" id="reply">Reply</button>
+                                            <hr>`;
 
     container_element.append(subject_container_element);
+
+    const user = document.querySelector('h2').innerHTML
+    if (data['recipients'].length === 1 && data['recipients'][0] === user) {
+        document.querySelectorAll('p')[1].innerHTML = '<p><b>To:</b> me</p>';
+    }
 
     // container 2
     const body_container_element = document.createElement('div');
     body_container_element.setAttribute('class', 'body-container');
     container_element.append(body_container_element);
-    const body_element = document.createElement('p');
-    body_element.innerHTML = data['body'];
-    body_container_element.appendChild(body_element);
+    body_container_element.innerHTML = data['body'];
+    container_element.appendChild(body_container_element);
 }
 
 const fetch_data = async (api_url) => {

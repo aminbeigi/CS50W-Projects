@@ -1,5 +1,6 @@
 body, html {
     background-color: #eeeeee;
+    margin: 0;
 }
 
 textarea {
@@ -13,9 +14,8 @@ tbody:hover {
 .subject-container {
     margin-bottom: 10px;
 }
-    .subject-container p,
-    .subject-container h5 {
-        display: inline;
+    .subject-container p {
+        margin:0;
     }
 
 .body-container {
@@ -23,8 +23,4 @@ tbody:hover {
     width: 80%;
     height: auto;
     word-wrap: break-word;
-}
-
-.time-container {
-
 }
