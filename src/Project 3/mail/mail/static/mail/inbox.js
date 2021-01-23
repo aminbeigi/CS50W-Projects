@@ -80,7 +80,6 @@ function load_mailbox(mailbox) {
     promise.then(data => {
         var emails = data;
         emails.forEach(email => {
-                // make func for this
                 if (mailbox === 'sent' && email['archived'] === true) {
                     return;
                 }
@@ -147,9 +146,9 @@ function load_mailbox(mailbox) {
 
 const get_form_data = (element) => {
     const form_element = element;
-    const recipients = form_element[1].value;
+    const recipients = form_element[1].value.split(' ');
     const subject = form_element[2].value;
-    const body = form_element[3].value;
+    const body = form_element[3].value
     const data = {
         'recipients': recipients,
         'subject': subject,
@@ -161,8 +160,7 @@ const get_form_data = (element) => {
 const send_mail = (data) => {
     fetch(API_URL + '/emails', {
         method: 'POST',
-        body: JSON.stringify(data
-    )
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .catch(error => {
