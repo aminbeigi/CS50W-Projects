@@ -14,28 +14,50 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function compose_email() {
-    // Show compose view and hide other views
+    // show compose view and hide other views
     document.querySelector('#emails-view').style.display = 'none';
     document.querySelector('#single-email-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'block';
+    document.querySelector('#compose-reply-view').style.display = 'none';
   
-    // Clear out composition fields
+    // clear out composition fields
     document.querySelector('#compose-recipients').value = '';
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
 
     const element = document.getElementsByClassName('btn btn-primary')[0];
     element.addEventListener('click', () => {
-        const data = get_form_data();
+        const form_data = document.querySelector('#compose-form');
+        const data = get_form_data(form_data);
         send_mail(data);
     });
 }
+
+const compose_reply_email = (data => {
+    // show compose view and hide other views
+    document.querySelector('#emails-view').style.display = 'none';
+    //document.querySelector('#single-email-view').style.display = 'block';
+    document.querySelector('#compose-view').style.display = 'none';
+    document.querySelector('#compose-reply-view').style.display = 'block';
+    // clear out composition fields
+    document.querySelector('#compose-reply-recipients').value = data['recipients'];
+    document.querySelector('#compose-reply-subject').value = `Re: ${data['subject']}`;
+    document.querySelector('#compose-reply-body').value = '';
+
+    const element = document.getElementsByClassName('btn btn-primary')[1];
+    element.addEventListener('click', () => {
+        const form_element = document.querySelector('#compose-reply-form');
+        const form_data = get_form_data(form_element);
+        send_mail(form_data);
+    });
+})
 
 function load_mailbox(mailbox) {
     // show the mailbox and hide other views
     document.querySelector('#emails-view').style.display = 'block';
     document.querySelector('#single-email-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'none';
+    document.querySelector('#compose-reply-view').style.display = 'none';
 
     // show the mailbox name
     document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -123,9 +145,10 @@ function load_mailbox(mailbox) {
     
 }
 
-const get_form_data = () => {
-    const form_element = document.querySelector('form'); const recipients = form_element[1].value;
-       const subject = form_element[2].value;
+const get_form_data = (element) => {
+    const form_element = element;
+    const recipients = form_element[1].value;
+    const subject = form_element[2].value;
     const body = form_element[3].value;
     const data = {
         'recipients': recipients,
@@ -168,6 +191,12 @@ const show_email = data => {
                                             <hr>`;
 
     container_element.append(subject_container_element);
+
+    const reply_btn = document.querySelector('#reply');
+    reply_btn.addEventListener('click', () => {
+        compose_reply_email(data);
+    })
+    
 
     const user = document.querySelector('h2').innerHTML
     if (data['recipients'].length === 1 && data['recipients'][0] === user) {
