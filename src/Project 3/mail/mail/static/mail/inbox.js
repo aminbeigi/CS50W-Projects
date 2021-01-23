@@ -40,7 +40,7 @@ const compose_reply_email = (data => {
     document.querySelector('#compose-view').style.display = 'none';
     document.querySelector('#compose-reply-view').style.display = 'block';
     // clear out composition fields
-    document.querySelector('#compose-reply-recipients').value = data['recipients'];
+    document.querySelector('#compose-reply-recipients').value = display_recipients(data['recipients']);
     document.querySelector('#compose-reply-subject').value = `Re: ${data['subject']}`;
     document.querySelector('#compose-reply-body').value = '';
 
@@ -146,9 +146,9 @@ function load_mailbox(mailbox) {
 
 const get_form_data = (element) => {
     const form_element = element;
-    const recipients = form_element[1].value.split(' ');
+    const recipients = form_element[1].value;
     const subject = form_element[2].value;
-    const body = form_element[3].value
+    const body = form_element[3].value;
     const data = {
         'recipients': recipients,
         'subject': subject,
@@ -157,11 +157,16 @@ const get_form_data = (element) => {
     return data
 };
 
-const send_mail = (data) => {
+const send_mail = data => {
     fetch(API_URL + '/emails', {
         method: 'POST',
-        body: JSON.stringify(data)
-    })
+        body: JSON.stringify({
+            recipients: data['subject'],
+            subject: data['subject'],
+            body: data['body']
+            })
+        })
+
     .then(response => response.json())
     .catch(error => {
         console.log('error: ', error)
@@ -169,6 +174,7 @@ const send_mail = (data) => {
 };
 
 const show_email = data => {
+    console.log(data)
     document.querySelector('#emails-view').style.display = 'none';
     empty_element('#single-email-view');
     document.querySelector('#single-email-view').style.display = 'block';
@@ -182,7 +188,7 @@ const show_email = data => {
     subject_container_element.setAttribute('class', 'subject-container');
 
     subject_container_element.innerHTML = `<p><b>From:</b> ${data['sender']}</p>
-                                            <p><b>To:</b> ${data['recipients']}</p>
+                                            <p><b>To:</b> ${display_recipients(data['recipients'])}</p>
                                             <p><b>Subject: </b>${data['subject']}</p>
                                             <p><b>Timestamp: </b>${data['timestamp']}</p>
                                             <button class="btn btn-sm btn-outline-primary" id="reply">Reply</button>
@@ -195,9 +201,8 @@ const show_email = data => {
         compose_reply_email(data);
     })
     
-
     const user = document.querySelector('h2').innerHTML
-    if (data['recipients'].length === 1 && data['recipients'][0] === user) {
+    if (data['recipients'].length === 1 && user in data['recipients']) {
         document.querySelectorAll('p')[1].innerHTML = '<p><b>To:</b> me</p>';
     }
 
@@ -249,4 +254,13 @@ const mark_archive_status = async (id, status) => {
 
 const empty_element = (attribute_value) => {
     document.querySelector(attribute_value).innerHTML = '';
+}
+
+const display_recipients = (recipients) => {
+    let output = '';
+    recipients.forEach(recipient => {
+
+        output += `${recipient}, `;
+    })
+    return output.slice(0, output.length-2);
 }
