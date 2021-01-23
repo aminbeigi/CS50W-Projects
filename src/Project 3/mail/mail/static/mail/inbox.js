@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:8000'
-const INBOX_CATEGORIES = ['sender', 'body', 'timestamp']
-
+const INBOX_COLUMNS = ['sender', 'body', 'timestamp'] 
+ 
 // TODO: remove empty tbody
 document.addEventListener('DOMContentLoaded', function() {
     // use buttons to toggle between views
@@ -77,29 +77,31 @@ function load_mailbox(mailbox) {
                     show_email(email);
                 });
                 
-            for (col = 0; col < 3; ++col) {
-                const category = INBOX_CATEGORIES[col]; 
+            INBOX_COLUMNS.forEach(inbox_column => {
                 const td_element = document.createElement('td');
-                if (category === 'sender') {
-                    td_element.innerHTML = `<span><i class="fas fa-archive"></i></span> ${email[category]}`;
+                if (inbox_column === 'sender') {
+                    td_element.innerHTML = `<span><i class="fas fa-archive"></i></span> ${email[inbox_column]}`;
                     if (mailbox === 'archive') {
-                        td_element.innerHTML = `<span><i class="fas fa-archive archived"></i></span> ${email[category]}`;
+                        td_element.innerHTML = `<span><i class="fas fa-archive archived"></i></span> ${email[inbox_column]}`;
+                    }
+                    if (mailbox === 'sent') {
+                        td_element.innerHTML = `<span><i class="fas fa-archive"></i></span> To: ${email[inbox_column]}`;
                     }
                 }
 
-                if (category === 'body') {
-                    if (email[category].length >= 50) {
-                        td_element.innerHTML = `${email[category].slice(0,50)}...`;
+                if (inbox_column === 'body') {
+                    if (email[inbox_column].length >= 50) {
+                        td_element.innerHTML = `${email[inbox_column].slice(0,80)}...`;
                     } else {
-                        td_element.innerHTML = email[category];
+                        td_element.innerHTML = email[inbox_column];
                     }
                 }
                 
-                if (category === 'timestamp') {
-                    td_element.innerHTML = email[category];
+                if (inbox_column === 'timestamp') {
+                    td_element.innerHTML = email[inbox_column];
                 }
                 tb_element.appendChild(td_element);
-            }
+            })
         })
 
         // make icons clickable
