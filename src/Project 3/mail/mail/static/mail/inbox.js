@@ -1,7 +1,6 @@
 const API_URL = 'http://localhost:8000'
 const INBOX_COLUMNS = ['sender', 'body', 'timestamp'] 
  
-// TODO: remove empty tbody
 document.addEventListener('DOMContentLoaded', function() {
     // use buttons to toggle between views
     document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
@@ -25,8 +24,8 @@ function compose_email() {
     document.querySelector('#compose-subject').value = '';
     document.querySelector('#compose-body').value = '';
 
-    const element = document.getElementsByClassName('btn btn-primary')[0];
-    element.addEventListener('click', () => {
+    const btn_element = document.querySelector('.btn-primary')
+    btn_element.addEventListener('click', () => {
         const form_data = document.querySelector('#compose-form');
         const data = get_form_data(form_data);
         send_mail(data);
@@ -44,8 +43,8 @@ const compose_reply_email = (data => {
     document.querySelector('#compose-reply-subject').value = `Re: ${data['subject']}`;
     document.querySelector('#compose-reply-body').value = '';
 
-    const element = document.getElementsByClassName('btn btn-primary')[1];
-    element.addEventListener('click', () => {
+    const btn_element = document.querySelector('.btn-primary')
+    btn_element.addEventListener('click', () => {
         const form_element = document.querySelector('#compose-reply-form');
         const form_data = get_form_data(form_element);
         send_mail(form_data);
@@ -118,7 +117,7 @@ function load_mailbox(mailbox) {
                 }
                 
                 if (inbox_column === 'timestamp') {
-                    td_element.innerHTML = email[inbox_column];
+                    td_element.innerHTML = `${email[inbox_column]} <span><i class="fas fa-trash"></i></span>`;
                 }
                 tb_element.appendChild(td_element);
             })
@@ -130,6 +129,12 @@ function load_mailbox(mailbox) {
             icon.addEventListener('click', (event) => {
                 event.stopPropagation();
                 const id = icon.closest('tbody').id;
+
+                if (icon.classList.contains('fa-trash')) {
+                    delete_email(id);
+                    //window.location.reload();
+                    return;
+                }
                 if (icon.classList.contains('archived')) {
                     mark_archive_status(id, false);
                     icon.setAttribute('class', 'fas fa-archive');
@@ -159,13 +164,15 @@ const get_form_data = (element) => {
 const send_mail = data => {
     fetch(API_URL + '/emails', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-            recipients: data['subject'],
+            recipients: data['recipients'],
             subject: data['subject'],
             body: data['body']
             })
         })
-
     .then(response => response.json())
     .catch(error => {
         console.log('error: ', error)
@@ -218,8 +225,7 @@ const fetch_data = async (api_url) => {
     return data;
 }
 
-// TODO: async?
-const mark_read = async (id) => {
+const mark_read = (id) => {
     fetch(`${API_URL}/emails/${id}`, {
         method: 'PUT',
         body: JSON.stringify({

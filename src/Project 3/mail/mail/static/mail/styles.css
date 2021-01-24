@@ -39,10 +39,12 @@ tbody:hover {
     font-weight: 500;
 }
 
-.fa-archive {
+.fa-archive,
+.fa-trash {
     opacity: 20%;
 }
-    .fa-archive:hover {
+    .fa-archive:hover,
+    .fa-trash:hover {
         opacity: 100%;
     }
 
