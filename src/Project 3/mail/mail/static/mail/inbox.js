@@ -131,8 +131,6 @@ function load_mailbox(mailbox) {
                 const id = icon.closest('tbody').id;
 
                 if (icon.classList.contains('fa-trash')) {
-                    delete_email(id);
-                    //window.location.reload();
                     return;
                 }
                 if (icon.classList.contains('archived')) {
