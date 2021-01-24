@@ -67,7 +67,6 @@ function load_mailbox(mailbox) {
     document.querySelector('#emails-view').append(t_element);
 
     const tb_element = document.createElement('tbody');
-    t_element.appendChild(tb_element);
 
     if (mailbox === 'inbox') {
         var promise = fetch_data(API_URL + '/emails/inbox');
