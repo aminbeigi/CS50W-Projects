@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Button, Breadcrumb, Card, Container } from 'react-bootstrap'
 
-const APIURL = 'http://localhost:8000';
+const API_URL = 'http://localhost:8000';
 
 const temp = e => {
     const title = e.target[0].value
@@ -18,11 +18,14 @@ const temp = e => {
 }
 const fetchData = (endpoint) => {
     fetch(API_URL + endpoint)
-        .then(respose => response.json())
+        .then(response => response.json())
         .then(response => console.log(response))
+        .catch(() => console.log(`Can't access ${API_URL + endpoint} response.`))
 }
 
-const Post = () => {
+fetchData('/posts')
+
+const CreateNewPost = () => {
     return (
         <section>
             <Card>
@@ -63,6 +66,19 @@ const NavBar = () => {
 }
 
 class Index extends Component {
+    state = {
+        data: [],
+        loading: False
+    }
+
+    componentDidMount() {
+        console.log("The component is now mounted!")
+    }
+
+    componentDidUpdate() {
+        console.log("The component just updated")
+    }
+
     render() {
         return (
             <div>

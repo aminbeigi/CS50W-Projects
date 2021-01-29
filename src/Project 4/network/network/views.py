@@ -9,7 +9,8 @@ from .models import User, Post
 
 @csrf_exempt
 def posts(request):
-    posts = Post.objects.all()
-    # Return posts in reverse chronologial order
-    posts = posts.order_by("-timestamp").all()
-    return JsonResponse([post.serialize() for post in posts], safe=False)
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        # Return posts in reverse chronologial order
+        posts = posts.order_by("-timestamp").all()
+        return JsonResponse([post.serialize() for post in posts], safe=False)
