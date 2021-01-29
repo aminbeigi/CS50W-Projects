@@ -23,8 +23,6 @@ const fetchData = (endpoint) => {
         .catch(() => console.log(`Can't access ${API_URL + endpoint} response.`))
 }
 
-fetchData('/posts')
-
 const CreateNewPost = () => {
     return (
         <section>
@@ -68,11 +66,16 @@ const NavBar = () => {
 class Index extends Component {
     state = {
         data: [],
-        loading: False
+        loading: false
     }
 
     componentDidMount() {
         console.log("The component is now mounted!")
+        this.setState({loading: true})
+        fetch(API_URL + '/posts')
+            .then(response => response.json())
+            .then(response => this.setState({data: response, loading: false}))
+            .catch(() => console.log(`Can't access ${API_URL + '/posts'} response.`))
     }
 
     componentDidUpdate() {
@@ -92,6 +95,16 @@ class Index extends Component {
                     <Post title='titlkkkkkkkkkkkke' body='body'/>
                     <Post title='title2' body='body2'/>
                     <Post title='title3' body='body3'/>
+                    {this.loading
+                        ? "loading..."
+                        : <div>
+                            {this.state.data.map(post => {
+                                return(
+                                    <p>{post['title']}</p>
+                                )
+                            })}
+                        </div>
+                    }
                 </Container>
             </div>
         )
