@@ -4,7 +4,16 @@ import './index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Breadcrumb, Card, Container } from 'react-bootstrap'
+import { Button, Breadcrumb, Card, Container } from 'react-bootstrap'
+
+const temp = e => {
+    const title = e.target[0].value
+    const body = e.target[1].value
+    console.log(title)
+    e.target[0].value = ''
+    e.target[1].value = ''
+    e.preventDefault();
+}
 
 const CreateNewPost = () => {
     return (
@@ -12,8 +21,11 @@ const CreateNewPost = () => {
             <Card>
             <Card.Header as="h5">Create new post</Card.Header>
                 <Card.Body>
-                    <Card.Title>title: <input></input></Card.Title>
-                    <Card.Text>Body: <input></input></Card.Text>
+                    <form onSubmit={temp}>
+                    <Card.Title>title: <input type="text"></input></Card.Title>
+                    <Card.Text>Body: <input type="text"></input></Card.Text>
+                    <Button type="submit" variant="primary" >Post</Button>
+                    </form>
                 </Card.Body>
             </Card>
         </section>
