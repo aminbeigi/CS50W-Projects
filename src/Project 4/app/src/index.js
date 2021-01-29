@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Button, Breadcrumb, Card, Container } from 'react-bootstrap'
 
+const APIURL = 'http://localhost:8000';
+
 const temp = e => {
     const title = e.target[0].value
     const body = e.target[1].value
@@ -14,8 +16,13 @@ const temp = e => {
     e.target[1].value = ''
     e.preventDefault();
 }
+const fetchData = (endpoint) => {
+    fetch(API_URL + endpoint)
+        .then(respose => response.json())
+        .then(response => console.log(response))
+}
 
-const CreateNewPost = () => {
+const Post = () => {
     return (
         <section>
             <Card>
