@@ -39,13 +39,15 @@ const CreateNewPost = () => {
         </section>
     )
 }
-const Post = ({title, body}) => {
+const Post = ({title, body, user, timestamp}) => {
     return (
         <section>
             <Card>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">by {user}</Card.Subtitle>
                     <Card.Text>{body}</Card.Text>
+                    <Card.Subtitle className="mb-2 text-muted">{timestamp}</Card.Subtitle>
                 </Card.Body>
             </Card>
         </section>
@@ -92,15 +94,14 @@ class Index extends Component {
                     <CreateNewPost />
                     <br></br>
                     <h1>All Posts</h1>
-                    <Post title='titlkkkkkkkkkkkke' body='body'/>
-                    <Post title='title2' body='body2'/>
-                    <Post title='title3' body='body3'/>
                     {this.loading
                         ? "loading..."
                         : <div>
                             {this.state.data.map(post => {
                                 return(
-                                    <p>{post['title']}</p>
+                                    <div>
+                                        <Post title={post['title']} body={post['body']} user={post['user']} timestamp={post['timestamp']} />
+                                    </div>
                                 )
                             })}
                         </div>
