@@ -9,7 +9,6 @@ import { Button, Breadcrumb, Card, Container } from 'react-bootstrap';
 const API_URL = 'http://localhost:8000';
 const PAGE_POST_LIMIT = 5;
 
-
 const postData = e => {
     const title = e.target[0].value;
     const body = e.target[1].value;
@@ -120,7 +119,6 @@ class Index extends Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     }
-
 
     render() {
         return (
