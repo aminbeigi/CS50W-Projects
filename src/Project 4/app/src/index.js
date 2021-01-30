@@ -4,20 +4,21 @@ import './index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Breadcrumb, Card, Container } from 'react-bootstrap'
+import { Button, Breadcrumb, Card, Container } from 'react-bootstrap';
 
 const API_URL = 'http://localhost:8000';
 const PAGE_POST_LIMIT = 5;
 
+
 const postData = e => {
-    const title = e.target[0].value
-    const body = e.target[1].value
+    const title = e.target[0].value;
+    const body = e.target[1].value;
     const data = {
         'user': 'George',
         'title': title,
         'body': body,
     }
-    console.log(data)
+    console.log(data);
     
     fetch(API_URL + '/create-post', {
         method: 'POST',
@@ -31,8 +32,8 @@ const postData = e => {
         console.error('Error:', error);
       });    
 
-    e.target[0].value = ''
-    e.target[1].value = ''
+    e.target[0].value = '';
+    e.target[1].value = '';
     e.preventDefault();
 }
 
@@ -81,8 +82,20 @@ const NavBar = () => {
 class Index extends Component {
     state = {
         data: [],
-        loading: false
+        loading: false,
+        currentPostCount: 0,
+        totalPostCount: 0,
+        atBottomPage: false
     }
+
+        handleScroll = (e) => {
+            const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+            if (bottom) {
+                document.querySelector('body').style.background = 'green';
+            } else {
+                document.querySelector('body').style.background = 'white';
+            }
+        }
 
     componentDidMount() {
         console.log("The component is now mounted!")
@@ -91,17 +104,28 @@ class Index extends Component {
             .then(response => response.json())
             .then(response => this.setState({data: response, loading: false}))
             .catch(() => console.log(`Can't access ${API_URL + '/posts'} response.`))
+
+        this.setState({currentPostCount: 5});
+        const dataLength = this.state.data.length
+        this.setState({totalPostCount: dataLength});
+
+        // event listeners
+        window.addEventListener('scroll', this.handleScroll);
     }
 
     componentDidUpdate() {
         console.log("The component just updated")
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+
     render() {
         return (
             <div>
                 <NavBar />
-
                 <Container>
                     <br></br>
                     <CreateNewPost />
@@ -110,10 +134,10 @@ class Index extends Component {
                     {this.loading
                         ? "loading..."
                         : <div>
-                            {this.state.data.map(post => {
+                            {this.state.data.map((post, i) => {
                                 return(
-                                    <div>
-                                        <Post title={post['title']} body={post['body']} user={post['user']} timestamp={post['timestamp']} />
+                                    <div key={i}>
+                                        <Post key={i} title={post['title']} body={post['body']} user={post['user']} timestamp={post['timestamp']} />
                                     </div>
                                 )
                             })}
