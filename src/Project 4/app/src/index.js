@@ -7,20 +7,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Breadcrumb, Card, Container } from 'react-bootstrap'
 
 const API_URL = 'http://localhost:8000';
+const PAGE_POST_LIMIT = 5;
 
-const temp = e => {
+const postData = e => {
     const title = e.target[0].value
     const body = e.target[1].value
-    console.log(title)
+    const data = {
+        'user': 'George',
+        'title': title,
+        'body': body,
+    }
+    console.log(data)
+    
+    fetch(API_URL + '/create-post', {
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });    
+
     e.target[0].value = ''
     e.target[1].value = ''
     e.preventDefault();
-}
-const fetchData = (endpoint) => {
-    fetch(API_URL + endpoint)
-        .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(() => console.log(`Can't access ${API_URL + endpoint} response.`))
 }
 
 const CreateNewPost = () => {
@@ -29,9 +42,9 @@ const CreateNewPost = () => {
             <Card>
             <Card.Header as="h5">Create new post</Card.Header>
                 <Card.Body>
-                    <form onSubmit={temp}>
+                    <form onSubmit={postData}>
                     <Card.Title>title: <input type="text"></input></Card.Title>
-                    <Card.Text>Body: <input type="text"></input></Card.Text>
+                    <Card.Text>Body: <textarea rows="4" cols="40"></textarea></Card.Text>
                     <Button type="submit" variant="primary" >Post</Button>
                     </form>
                 </Card.Body>
