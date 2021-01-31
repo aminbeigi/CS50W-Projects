@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -43,9 +43,9 @@ const CreateNewPost = () => {
             <Card.Header as="h5">Create new post</Card.Header>
                 <Card.Body>
                     <form onSubmit={postData}>
-                    <Card.Title>title: <input type="text"></input></Card.Title>
-                    <Card.Text>Body: <textarea rows="4" cols="40"></textarea></Card.Text>
-                    <Button type="submit" variant="primary" >Post</Button>
+                        <Card.Title>title: <input type="text"></input></Card.Title>
+                        <Card.Text>Body: <textarea rows="4" cols="40"></textarea></Card.Text>
+                        <Button type="submit" variant="primary" >Post</Button>
                     </form>
                 </Card.Body>
             </Card>
@@ -78,49 +78,22 @@ const NavBar = () => {
     )
 }
 
-class Index extends Component {
-    state = {
+const Index = () => {
+    const [state, setState] = useState({
         data: [],
         loading: false,
-        currentPostCount: 0,
-        totalPostCount: 0,
-        atBottomPage: false
-    }
-
-        handleScroll = (e) => {
-            const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-            if (bottom) {
-                document.querySelector('body').style.background = 'green';
-            } else {
-                document.querySelector('body').style.background = 'white';
-            }
         }
+    )
 
-    componentDidMount() {
+    useEffect(() => {
         console.log("The component is now mounted!")
-        this.setState({loading: true})
+        setState({loading: true})
         fetch(API_URL + '/posts')
             .then(response => response.json())
-            .then(response => this.setState({data: response, loading: false}))
+            .then(response => setState({data: response, loading: false}))
             .catch(() => console.log(`Can't access ${API_URL + '/posts'} response.`))
+    }, [])
 
-        this.setState({currentPostCount: 5});
-        const dataLength = this.state.data.length
-        this.setState({totalPostCount: dataLength});
-
-        // event listeners
-        window.addEventListener('scroll', this.handleScroll);
-    }
-
-    componentDidUpdate() {
-        console.log("The component just updated")
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
-    }
-
-    render() {
         return (
             <div>
                 <NavBar />
@@ -129,10 +102,10 @@ class Index extends Component {
                     <CreateNewPost />
                     <br></br>
                     <h1>All Posts</h1>
-                    {this.loading
+                    {state.loading
                         ? "loading..."
                         : <div>
-                            {this.state.data.map((post, i) => {
+                            {state.data.map((post, i) => {
                                 return(
                                     <div key={i}>
                                         <Post key={i} title={post['title']} body={post['body']} user={post['user']} timestamp={post['timestamp']} />
@@ -145,7 +118,7 @@ class Index extends Component {
             </div>
         )
     }
-}
+
 
 ReactDOM.render(
     <Index />,
