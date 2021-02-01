@@ -4,8 +4,7 @@ import './index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Breadcrumb, Card, Container } from 'react-bootstrap';
-
+import { Button, Breadcrumb, Card, Container, Form} from 'react-bootstrap';
 import * as serviceWorker from './serviceWorker';
 
 const API_URL = 'http://localhost:8000';
@@ -15,11 +14,13 @@ const CreateNewPost = ({onCreatePost}) => {
     const postData = e => {
         const title = e.target[0].value;
         const body = e.target[1].value;
+        
         const data = {
             'user': 'George',
             'title': title,
             'body': body,
         }
+
         console.log(data);
 
         fetch(API_URL + '/create-post', {
@@ -72,6 +73,13 @@ const Post = ({title, body, user, timestamp}) => {
             </Card>
         </section>
     )
+}
+
+Post.defaultProps = {
+    title: "No title",
+    body: "No body",
+    user: "No user",
+    timestamp: "No timestamp"
 }
 
 const NavBar = () => {
@@ -130,6 +138,9 @@ const Index = () => {
         )
     }
 
+Index.defaultProps = {
+    title: 'No title'
+}
 
 ReactDOM.render(
     <Index />,
