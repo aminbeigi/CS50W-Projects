@@ -39,5 +39,14 @@ def posts(request):
 
         return JsonResponse({'message': "Post sent successfully."}, status=201)
 
-    # send other request
+    # sent other request
     return JsonResponse({'error': "GET or POST request required."}, status=400)
+
+@csrf_exempt
+def post(request, post_id):
+    if request.method == 'GET':
+        post = Post.objects.get(id=post_id)
+        return JsonResponse(post.serialize())
+
+    # sent other request
+    return JsonResponse({'error': "GET request required."}, status=400)

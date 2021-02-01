@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
    # API Routes
     path("posts", views.posts),
-    #path("emails/<int:email_id>", views.email, name="email"),
+    path("posts/<int:post_id>", views.post),
 ]
