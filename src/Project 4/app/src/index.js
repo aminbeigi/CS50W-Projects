@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Homepage } from './Homepage/Homepage'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Homepage } from './Homepage/Homepage'
+import { MyPostsPage } from './MyPostsPage/MyPostsPage'
 
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <Homepage />,
+    <Router>
+        <Switch>
+            <Route exact path="/" component={Homepage}></Route>
+            <Route exact path="/my-posts" component={MyPostsPage}></Route>
+        </Switch>
+    </Router>,
     document.getElementById('root')
 );
 
