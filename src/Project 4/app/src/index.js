@@ -49,11 +49,19 @@ const CreateNewPost = ({onCreatePost}) => {
             <Card>
             <Card.Header as="h5">Create new post</Card.Header>
                 <Card.Body>
-                    <form onSubmit={postData}>
-                        <Card.Title>title: <input type="text"></input></Card.Title>
-                        <Card.Text>Body: <textarea rows="4" cols="40"></textarea></Card.Text>
-                        <Button type="submit" variant="primary" >Post</Button>
-                    </form>
+                    <Form onSubmit={postData}>
+                        <Form.Group>
+                                <Form.Label>Title:</Form.Label>
+                            <Form.Control required size="lg" type="text" placeholder="title" />
+                        </Form.Group>
+
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>Body:</Form.Label>
+                                <Form.Control required as="textarea" rows={3} placeholder="body"/>
+                        </Form.Group>
+
+                        <Button type="submit" variant="primary">Post</Button>
+                    </Form>
                 </Card.Body>
             </Card>
         </section>
