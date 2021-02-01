@@ -5,7 +5,5 @@ from . import views
 urlpatterns = [
    # API Routes
     path("posts", views.posts),
-    path("create-post", views.create_post),
     #path("emails/<int:email_id>", views.email, name="email"),
-    #path("emails/<str:mailbox>", views.mailbox, name="mailbox"),
 ]
