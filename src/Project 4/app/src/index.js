@@ -51,12 +51,10 @@ const CreateNewPost = ({onCreatePost}) => {
                 <Card.Body>
                     <Form onSubmit={postData}>
                         <Form.Group>
-                                <Form.Label>Title:</Form.Label>
                             <Form.Control required size="lg" type="text" placeholder="title" />
                         </Form.Group>
 
                         <Form.Group controlId="exampleForm.ControlTextarea1">
-                                <Form.Label>Body:</Form.Label>
                                 <Form.Control required as="textarea" rows={3} placeholder="body"/>
                         </Form.Group>
 
