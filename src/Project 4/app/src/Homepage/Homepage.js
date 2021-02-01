@@ -11,12 +11,15 @@ import { CreateNewPost } from '../shared/components/CreateNewPost/CreateNewPost'
 import { Post } from '../shared/components/Post/Post'
 
 export const Homepage = () => {
+    const postIncrement = 3;
+
     const [state, setState] = useState({
         data: [],
         loading: false,
+        currentPostCount: 0
         }
     )
-        
+
     const handleScroll = () => {
         const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
         if (atBottom) {
@@ -26,10 +29,10 @@ export const Homepage = () => {
     document.addEventListener('scroll', handleScroll);
 
     const fetchData = () => {
-         fetch('http://localhost:8000' + '/posts')
-            .then(response => response.json())
-            .then(response => setState({data: response, loading: false}))
-            .catch(() => console.log(`Can't access ${'http://localhost:8000' + '/posts'} response.`))       
+        fetch('http://localhost:8000' + '/posts')
+           .then(response => response.json())
+           .then(response => setState({data: response, loading: false}))
+           .catch(() => console.log(`Can't access ${'http://localhost:8000' + '/posts'} response.`))       
     }
 
     useEffect(() => {
@@ -48,7 +51,7 @@ export const Homepage = () => {
                     {state.loading
                         ? "loading..."
                         : <div>
-                            {state.data.map((post) => {
+                            {state.data.map(post => {
                                 return (
                                     <div key={post.id}>
                                         { post.user === 'George' 
