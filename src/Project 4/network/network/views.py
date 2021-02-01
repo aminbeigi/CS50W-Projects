@@ -48,5 +48,10 @@ def post(request, post_id):
         post = Post.objects.get(id=post_id)
         return JsonResponse(post.serialize())
 
+    if request.method == 'DELETE':
+        post = Post.objects.get(id=post_id)
+        post.delete()
+        return JsonResponse({'message': "Delete sent successfully."}, status=200)
+
     # sent other request
-    return JsonResponse({'error': "GET request required."}, status=400)
+    return JsonResponse({'error': "GET or DELETE request required."}, status=400)
