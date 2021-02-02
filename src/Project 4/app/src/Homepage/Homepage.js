@@ -20,13 +20,13 @@ export const Homepage = () => {
         }
     )
 
-    const handleScroll = () => {
+    const loadMorePosts = () => {
         const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
         if (atBottom) {
             console.log("we at bottom boys");
         }
     }
-    document.addEventListener('scroll', handleScroll);
+    document.addEventListener('scroll', loadMorePosts);
 
     const fetchData = () => {
         fetch('http://localhost:8000' + '/posts')
@@ -37,8 +37,9 @@ export const Homepage = () => {
 
     useEffect(() => {
         console.log("The component is now mounted!");
+        document.addEventListener('scroll', loadMorePosts);
         fetchData();
-    }, [])
+    }, []);
 
         return (
             <div>
@@ -55,6 +56,7 @@ export const Homepage = () => {
                                 return (
                                     <div key={post.id}>
                                         { post.user === 'George' 
+                                            // TODO: add edit post feature PUT request
                                             ? <Post id={post.id} title={post.title} body={post.body} user={post.user} timestamp={post.timestamp} onDeletePost={fetchData} />
                                             : <Post id={post.id} title={post.title} body={post.body} user={post.user} timestamp={post.timestamp} />
                                         } 
