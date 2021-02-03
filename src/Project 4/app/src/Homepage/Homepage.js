@@ -28,9 +28,10 @@ export const Homepage = () => {
     }
 
     const fetchData = () => {
-        fetch('http://localhost:8000' + '/posts')
+        const limit = state.currentPostCount+postIncrement
+        fetch('http://localhost:8000' + '/posts?limit=' + limit)
            .then(response => response.json())
-           .then(response => setState({data: response, loading: false}))
+           .then(response => setState({data: response, loading: false, currentPostCount: limit}))
            .catch(() => console.log(`Can't access ${'http://localhost:8000' + '/posts'} response.`))       
     }
 
