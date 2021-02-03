@@ -8,10 +8,28 @@ from .models import User, Post
 @csrf_exempt
 def posts(request):
     if request.method == 'GET':
+        limit = request.GET.get('limit', None)
+        if limit == None:
+            posts = Post.objects.all()
+            # return posts in reverse chronologial order
+            posts = posts.order_by('-timestamp').all()
+            return JsonResponse([post.serialize() for post in posts], safe=False)
+
+        if not(limit.isnumeric()):
+            return JsonResponse({
+                'error': f"Limit must be a positive integer."
+            }, status=400)
+
         posts = Post.objects.all()
-        # return posts in reverse chronologial order
-        posts = posts.order_by('-timestamp').all()
-        return JsonResponse([post.serialize() for post in posts], safe=False)
+        limit = int(limit)
+        if limit >= 0 and limit <= len(posts):
+            # return posts in reverse chronologial order
+            posts = posts.order_by('-timestamp').all()[:limit]
+            return JsonResponse([post.serialize() for post in posts], safe=False, status=200)
+        else:
+            return JsonResponse({
+                'error': f"Limit must be in the range of 0 to {len(posts)}."
+            }, status=400)
 
     # creating a new post must be via POST
     if request.method == 'POST':
@@ -23,7 +41,7 @@ def posts(request):
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             return JsonResponse({
-                'error': f'User with post {post} does not exist.'
+                'error': f"User with post {post} does not exist."
             }, status=400)
 
         # get contents of post

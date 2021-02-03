@@ -20,13 +20,12 @@ export const Homepage = () => {
         }
     )
 
-    const loadMorePosts = () => {
+    const handleScroll = () => {
         const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
         if (atBottom) {
             console.log("we at bottom boys");
         }
     }
-    document.addEventListener('scroll', loadMorePosts);
 
     const fetchData = () => {
         fetch('http://localhost:8000' + '/posts')
@@ -37,8 +36,11 @@ export const Homepage = () => {
 
     useEffect(() => {
         console.log("The component is now mounted!");
-        document.addEventListener('scroll', loadMorePosts);
+        document.addEventListener('scroll', handleScroll);
         fetchData();
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
     }, []);
 
         return (
