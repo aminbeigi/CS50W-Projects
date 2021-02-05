@@ -15,7 +15,7 @@ A repository of projects and code for [CS50 Web Development Course](https://cour
 ### 6. User Interfaces
 
 ### 7. Testing, CI/CD
-- Project 4
+- [Project 4](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%204)
 
 ### 8. Scalability and Security
 - Project Final
