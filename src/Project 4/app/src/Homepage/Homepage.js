@@ -59,7 +59,6 @@ export const Homepage = () => {
                                 return (
                                     <div key={post.id}>
                                         { post.user === 'George' 
-                                            // TODO: add edit post feature PUT request
                                             ? <Post id={post.id} title={post.title} body={post.body} user={post.user} timestamp={post.timestamp} onDeletePost={fetchData} />
                                             : <Post id={post.id} title={post.title} body={post.body} user={post.user} timestamp={post.timestamp} />
                                         } 
