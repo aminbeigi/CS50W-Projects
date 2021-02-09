@@ -18,6 +18,4 @@ A repository of projects and code for [CS50 Web Development Course](https://cour
 - [Project 4](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%204)
 
 ### 8. Scalability and Security
-- Project Final
-
-TODO: add pics
+- [Project Final] (https://github.com/aminbeigi/truth-table-generator)
