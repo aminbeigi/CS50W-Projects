@@ -18,4 +18,4 @@ A repository of projects and code for [CS50's Web Programming with Python and Ja
 - [Project 4](https://github.com/aminbeigi/CS50W-Projects/tree/main/src/Project%204)
 
 ### 8. Scalability and Security
-- [Project Final](https://truth.aminbeigi.com)
+- [Project Final](https://github.com/aminbeigi/Truth-Table-Generator)
